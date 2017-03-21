@@ -39,49 +39,40 @@ window.addEventListener('load', function() {
         buildingSheet = document.getElementById("building-sprite");
 
 
-    // create and update local storage
-    // create game states
-    // create keyboard control
+    // TODO: create and update local storage
+    // TODO: create game states
+    // TODO: create keyboard control
 
-    // create background
-    // create player and player controls
+    // TODO: create background
 
-    let hero = new Player(0, 0, 0, 0, 7, 10, playerCtx),
+    // player and player controls
+    let hero = new Player(playerCtx),
         heroBody = hero.rigidBody,
         heroSprite = hero.sprite;
 
     control(heroBody);
 
-    function switchHeroSprites() {
-        if (heroBody.speed.x > 0 && heroBody.speed.y === 0) {
-            heroSprite = hero.changeSprite("run");
-        } else if (heroBody.speed.x < 0.5 && heroBody.speed.y === 0) {
-            heroSprite = hero.changeSprite("walk");
-        } else if (heroBody.speed.y !== 0) {
-            heroSprite = hero.changeSprite("jump");
-        }
-    }
+    // TODO: create buildings spawner
 
-    // create buildings spawner
-    // create enemy spawner
+    // TODO: create enemy spawner
 
     function gameLoop() {
 
-        // render and update background
-        // render and update player
+        // TODO: render and update background
 
+        // render and update player
         let lastHeroCoords = heroBody
             .applyGravity(GLOBAL_GRAVITY) // pulls object down
             .decelerate(GLOBAL_FRICTION) // stops object horizontally
             .move();
-        switchHeroSprites();
+        hero.switchHeroSprites();
         heroSprite
             .render(heroBody.coords, lastHeroCoords)
             .update();
 
-        // spawn buildings
+        // TODO: spawn buildings
         //     render and update buildings
-        // spawn enemies
+        // TODO: spawn enemies
         //     render and update enemies
         // check for collision and change states
 
