@@ -14,20 +14,22 @@
         WALK_FRAMES = 15,
         CYCLES_PER_FRAME_RUN = 3,
         CYCLES_PER_FRAME_WALK = 6;
+    const DEFAULT_IMPULSE_X = 7,
+        DEFAULT_IMPULSE_Y = 10;
 
     var heroSheet = document.getElementById("hero-sprite");
 
     class Player {
-        constructor(x, y, dx, dy, ix, iy, playerCtx) {
-            this.coords = { x: x, y: y };
-            this.speed = { x: dx, y: dy };
+        constructor(playerCtx, coords, speed, impulse) {
             this.playerCtx = playerCtx;
-            this.rigidBody = this.createRigidBody(ix, iy);
+            this.coords = coords || { x: 0, y: 0 };
+            this.speed = speed || { x: 0, y: 0 };
+            this.rigidBody = this.createRigidBody(impulse);
             this.sprite = this.createSprite();
         }
 
-        createRigidBody(ix, iy) {
-            let impulse = { x: ix, y: iy };
+        createRigidBody(impulse) {
+            impulse = impulse || { x: DEFAULT_IMPULSE_X, y: DEFAULT_IMPULSE_Y };
             return new RigidBody(
                 this.coords,
                 this.speed,
@@ -65,44 +67,22 @@
                     this.sprite.frameIndex = FALL_INDEX;
                     this.sprite.framesCount = FALL_FRAMES;
                     break;
+                    // case for shoot
+                    // case for escape bullets
             }
             return this.sprite;
         }
 
-        /*
-                run() {
-                    return new Sprite(
-                        heroSheet,
-                        heroSheet.width / HERO_ALL_FRAMES,
-                        heroSheet.height,
-                        this.playerCtx,
-                        RUN_INDEX, // start frame in sheet
-                        RUN_FRAMES, // number of frames
-                        CYCLES_PER_FRAME_RUN);
-                }
-
-                jump() {
-                    return new Sprite(
-                        heroSheet,
-                        heroSheet.width / HERO_ALL_FRAMES,
-                        heroSheet.height,
-                        this.playerCtx,
-                        JUMP_INDEX, // start frame in sheet
-                        JUMP_FRAMES, // number of frames
-                        CYCLES_PER_FRAME_WALK);
-                }
-
-                fall() {
-                    return new Sprite(
-                        heroSheet,
-                        heroSheet.width / HERO_ALL_FRAMES,
-                        heroSheet.height,
-                        this.playerCtx,
-                        FALL_INDEX, // start frame in sheet
-                        FALL_FRAMES, // number of frames
-                        CYCLES_PER_FRAME_WALK);
-                }
-        */
-        // shoot
-        // escape bullets
+        switchHeroSprites() {
+            let heroBody = this.rigidBody,
+                heroSprite = this.Sprite;
+            if (heroBody.speed.x > 0 && heroBody.speed.y === 0) {
+                heroSprite = this.changeSprite("run");
+            } else if (heroBody.speed.x < 0.5 && heroBody.speed.y === 0) {
+                heroSprite = this.changeSprite("walk");
+            } else if (heroBody.speed.y !== 0) {
+                heroSprite = this.changeSprite("jump");
+            }
+            return this;
+        }
     }
