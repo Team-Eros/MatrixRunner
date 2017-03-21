@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Matrix Runner</title>
+    <link rel="stylesheet" href="./style/app.css" type="text/css" />
+</head>
+
+<body>
+    <!--user interface window states-->
+    <div id="menu"></div>
+    <div id="credits"></div>
+    <div id="scoreboard"></div>
+    <div id="game-play"></div>
+    <div id="game-lose"></div>
+    <div id="game-win"></div>
+
+    <!--load spritesheets (better to use JSON and load with assetLoader) -->
+    <img src="./assets/images/building.png" id="building-sprite" style="display: none">
+    <img src="./assets/images/hero.png" id="hero-sprite" style="display: none">
+
+    <!--game logic-->
+    <script src="./js/assetLoader.js"></script>
+    <script src="./js/utilities.js"></script>
+    <script src="./js/keyboard.js"></script>
+    <script src="./js/sprite.js"></script>
+    <script src="./js/rigidBody.js"></script>
+    <script src="./js/player.js"></script>
+    <script src="./js/enemy.js"></script>
+    <script src="./js/building.js"></script>
+    <script src="./js/background.js"></script>
+    <script src="./js/renderer.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>

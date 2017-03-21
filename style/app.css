@@ -1,0 +1,39 @@
+body {
+    background: url(../assets/images/pageback.png) no-repeat center center fixed;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+}
+
+#menu,
+#credits,
+#scoreboard,
+#game-lose,
+#game-win {
+    display: none;
+    align-content: center;
+    margin-top: 10px;
+}
+
+#game-play canvas {
+    background: #6dc9ff;
+    background: -moz-linear-gradient(top, #6dc9ff 0%, #f4faff 100%);
+    background: -webkit-linear-gradient(top, #6dc9ff 0%, #f4faff 100%);
+    background: linear-gradient(to bottom, #6dc9ff 0%, #f4faff 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#6dc9ff', endColorstr='#f4faff', GradientType=0);
+    box-shadow: 0 0 40px 5px black;
+    padding: 0;
+    margin: auto;
+    border: 10px inset #999;
+    /*border-radius: 10px;*/
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#player-canvas {
+    z-index: 5;
+}
