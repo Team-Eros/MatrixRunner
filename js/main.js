@@ -4,15 +4,16 @@ const FIELD_WIDTH = 1024,
     GLOBAL_FRICTION = 0.3,
     GLOBAL_GRAVITY = 0.5;
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
 
     // define variables
-    var gameContainer = document.getElementById("game-play")
+    var gameContainer = document.getElementById("game-play");
 
     // create canvas and context (main, player, enemies)
     var gameCanvas = document.createElement("canvas"),
         playerCanvas = document.createElement("canvas"),
-        enemyCanvas = document.createElement("canvas");
+        enemyCanvas = document.createElement("canvas"),
+        backgroundCanvas = document.createElement("canvas");
 
     // setup canvas nodes
     gameCanvas.id = "game-canvas";
@@ -27,14 +28,21 @@ window.addEventListener('load', function() {
     enemyCanvas.width = FIELD_WIDTH;
     enemyCanvas.height = FIELD_HEIGHT;
 
+    backgroundCanvas.id = "background-canvas";
+    backgroundCanvas.width = FIELD_WIDTH;
+    backgroundCanvas.height = FIELD_HEIGHT;
+
     // add canvas to dom
     gameContainer.appendChild(gameCanvas);
     gameContainer.appendChild(playerCanvas);
     gameContainer.appendChild(enemyCanvas);
+    gameContainer.appendChild(backgroundCanvas);
 
     // create contexts and load images
     var gameCtx = gameCanvas.getContext("2d"),
         playerCtx = playerCanvas.getContext("2d"),
+        canvasBackground = document.getElementById("background-canvas"),
+        backgroundCtx = canvasBackground.getContext("2d"),
         enemyCtx = enemyCanvas.getContext("2d"),
         buildingSheet = document.getElementById("building-sprite");
 
@@ -43,7 +51,8 @@ window.addEventListener('load', function() {
     // TODO: create game states
     // TODO: create keyboard control
 
-    // TODO: create background
+    //create background
+    let background = new Background(backgroundCtx);
 
     // player and player controls
     let hero = new Player(playerCtx),
@@ -58,7 +67,9 @@ window.addEventListener('load', function() {
 
     function gameLoop() {
 
-        // TODO: render and update background
+        // render and update background
+        background.render();
+        background.update();
 
         // render and update player
         let lastHeroCoords = heroBody
