@@ -12,8 +12,7 @@ window.addEventListener('load', function() {
     // create canvas and context (main, player, enemies)
     var gameCanvas = document.createElement("canvas"),
         playerCanvas = document.createElement("canvas"),
-        enemyCanvas = document.createElement("canvas"),
-        backgroundCanvas = document.createElement("canvas");
+        enemyCanvas = document.createElement("canvas");
 
     // setup canvas nodes
     gameCanvas.id = "game-canvas";
@@ -36,7 +35,6 @@ window.addEventListener('load', function() {
     // create contexts and load images
     var gameCtx = gameCanvas.getContext("2d"),
         playerCtx = playerCanvas.getContext("2d"),
-        backgroundCtx = gameCanvas.getContext("2d"),
         enemyCtx = enemyCanvas.getContext("2d");
 
 
@@ -45,7 +43,7 @@ window.addEventListener('load', function() {
     // TODO: create keyboard control
 
     //create background
-    let background = new Background(backgroundCtx);
+    let background = new Background(gameCtx);
 
     // player and player controls
     let hero = new Player(playerCtx),
