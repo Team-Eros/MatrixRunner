@@ -36,7 +36,7 @@ class Sprite {
         return this;
     }
 
-    // updates frame
+    // updates frame, do not use for sprites with 1 frame (TODO: validation)
     update() {
         this.cycles += 1;
         if (this.cycles >= this.cyclesPerFrame) {
