@@ -4,7 +4,7 @@ const FIELD_WIDTH = 1024,
     GLOBAL_FRICTION = 0.3,
     GLOBAL_GRAVITY = 0.5;
 
-window.addEventListener('load', function () {
+window.addEventListener('load', function() {
 
     // define variables
     var gameContainer = document.getElementById("game-play");
@@ -28,23 +28,16 @@ window.addEventListener('load', function () {
     enemyCanvas.width = FIELD_WIDTH;
     enemyCanvas.height = FIELD_HEIGHT;
 
-    backgroundCanvas.id = "background-canvas";
-    backgroundCanvas.width = FIELD_WIDTH;
-    backgroundCanvas.height = FIELD_HEIGHT;
-
     // add canvas to dom
     gameContainer.appendChild(gameCanvas);
     gameContainer.appendChild(playerCanvas);
     gameContainer.appendChild(enemyCanvas);
-    gameContainer.appendChild(backgroundCanvas);
 
     // create contexts and load images
     var gameCtx = gameCanvas.getContext("2d"),
         playerCtx = playerCanvas.getContext("2d"),
-        canvasBackground = document.getElementById("background-canvas"),
-        backgroundCtx = canvasBackground.getContext("2d"),
-        enemyCtx = enemyCanvas.getContext("2d"),
-        buildingSheet = document.getElementById("building-sprite");
+        backgroundCtx = gameCanvas.getContext("2d"),
+        enemyCtx = enemyCanvas.getContext("2d");
 
 
     // TODO: create and update local storage
@@ -66,11 +59,6 @@ window.addEventListener('load', function () {
     // TODO: create enemy spawner
 
     function gameLoop() {
-
-        // render and update background
-        background.render();
-        background.update();
-
         // render and update player
         let lastHeroCoords = heroBody
             .applyGravity(GLOBAL_GRAVITY) // pulls object down
@@ -80,6 +68,10 @@ window.addEventListener('load', function () {
         heroSprite
             .render(heroBody.coords, lastHeroCoords)
             .update();
+
+        // render and update background based on hero speed
+        background.speed = FRAME_SPEED + heroBody.speed.x;
+        background.pan();
 
         // TODO: spawn buildings
         //     render and update buildings
