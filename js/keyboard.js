@@ -9,7 +9,11 @@ function controlMenu() {
 
     $(document).on('keydown', handler);
     $(document).on('mouseover', handler);
+    $('#startBtn').on('click', function() {
+        $('#menu').addClass('hidden');
+        $('#game-play').removeClass('hidden');
 
+    });
     // up - down hover 
     function handler(e) {
         active.removeClass('btn-active');

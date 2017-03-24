@@ -105,6 +105,6 @@ div#menu .content-menu ul li {
 
 div#menu .content-menu ul li.btn-active {
     color: rgb(231, 235, 230);
-    font-size: 2.5em;
+    font-size: 2.2em;
     text-shadow: rgb(7, 93, 52) 0px 0px 5px, rgb(33, 162, 42) 0px 0px 10px, rgb(11, 197, 84) 0px 0px 15px, rgb(31, 225, 80) 0px 0px 20px, rgb(16, 244, 73) 0px 0px 30px, rgb(10, 78, 1) 0px 0px 40px, rgb(73, 146, 26) 0px 0px 50px, rgb(35, 95, 9) 0px 0px 75px;
 }
