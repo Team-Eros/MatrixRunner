@@ -10,14 +10,17 @@ const FIELD_WIDTH = 1024,
 window.addEventListener('load', function() {
 
     var width = window.innerWidth,
-        height = window.innerHeight,
-        templateMenu = document.getElementById('menu-template').innerHTML;
+        height = window.innerHeight;
+    debugger;
+    // templates
+    var templateMenu = document.getElementById('menu-template').innerHTML,
+        templateGameMenu = document.getElementById('game-play-menu').innerHTML;
     // define variables
     var gameContainer = document.getElementById("game-play"),
         menuContainer = document.getElementById("menu");
 
     menuContainer.innerHTML = templateMenu;
-
+    gameContainer.innerHTML = templateGameMenu;
 
     // create canvas and context (main, player, enemies)
     var gameCanvas = document.createElement("canvas"),
@@ -76,6 +79,7 @@ window.addEventListener('load', function() {
         heroSprite = hero.sprite;
 
     control(heroBody);
+    gameMenu();
 
     // TODO: create buildings spawner
 
@@ -90,7 +94,7 @@ window.addEventListener('load', function() {
                 .update();
         }
         // render and update player
-
+        // check if gamecontainer is visible    
         if (gameContainer.className === '') {
 
             var lastHeroCoords = heroBody

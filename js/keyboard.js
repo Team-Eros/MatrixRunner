@@ -35,6 +35,41 @@ function controlMenu() {
     }
 }
 
+// game menu
+function gameMenu() {
+
+    // pause button
+    $('.pause-game').on('click', function() {
+        var $this = $(this);
+        if ($('#game-play').hasClass('pause-loop')) {
+            $('#game-play').removeClass('pause-loop');
+            $this
+                .find('img')
+                .attr('src', './assets/images/pause.png');
+        } else {
+            $('#game-play').addClass('pause-loop');
+            $this
+                .find('img')
+                .attr('src', './assets/images/play.png');
+        }
+    });
+
+    // back menu
+    $('.back-menu').on('click', function() {
+        $('#game-play').addClass('hidden');
+        $('#menu').removeClass('hidden');
+    });
+
+    //exit
+    $(document).on('keydown', function(e) {
+        if (e.which === 27) {
+            $('#game-play').addClass('hidden');
+            $('#menu').removeClass('hidden');
+        }
+    });
+
+}
+
 function control(body) {
     window.addEventListener('keydown', function(ev) {
         console.log(ev.which);

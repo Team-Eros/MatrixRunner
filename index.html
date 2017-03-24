@@ -15,7 +15,7 @@
     <div id="menu"></div>
     <div id="credits" class="hidden"></div>
     <div id="scoreboard" class="hidden"></div>
-    <div id="game-play" class="hidden"></div>
+    <div id="game-play" class="hidden"> </div>
     <div id="game-lose" class="hidden"></div>
     <div id="game-win" class="hidden"></div>
 
@@ -24,6 +24,7 @@
     <img src="./assets/images/hero.png" id="hero-sprite" class="hide-img">
     <img src="./assets/images/background.png" id="background-sprite" class="hide-img">
     <img src="./assets/images/Matrix.png" id="backgroundEffect" class="hide-img">
+
     <!--templates-->
     <script id="menu-template" type="text/x-handlebars-template">
 
@@ -38,7 +39,17 @@
                 <li id="scoreBtn">Score</li>
             </ul>
         </div>
-        <!--<canvas id="menu-background"></canvas>-->
+
+    </script>
+
+    <script id="game-play-menu" type="text/x-handlebars-template">
+        <div class='pause-game btn-game'>
+            <img src="./assets/images/pause.png" alt="">
+        </div>
+
+        <div class="back-menu btn-game">
+            <img src="./assets/images/go_menu.png" alt="">
+        </div>
     </script>
 
     </script>
