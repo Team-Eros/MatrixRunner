@@ -74,9 +74,9 @@ class GameState {
     menu() {
         // menu state
         // go to play, credits, score state
-        // this.contentMenu.innerHTML = this.template;
+        controlMenu();
 
-
+        return this;
     }
     credits() {
 

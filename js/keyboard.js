@@ -1,4 +1,35 @@
 // creates control functionality for any rigidBody object
+'use strict';
+
+// control menu
+
+function controlMenu() {
+    var active = $('.btn-active') ||
+        $('.dropdownItemContainer li');
+
+    $(document).on('keydown', handler);
+    $(document).on('mouseover', handler);
+
+    // up - down hover 
+    function handler(e) {
+        active.removeClass('btn-active');
+
+        if (e.which === 40) {
+            active = active.next() || active;
+        } else if (e.which === 38) {
+            active = active.prev() || active;
+        } else if (e.which === 13) {
+            if (active.is('#startBtn')) {
+                $('#menu').addClass('hidden');
+                $('#game-play').removeClass('hidden');
+            }
+        } else {
+
+            active = $(e.target);
+        }
+        active.addClass('btn-active');
+    }
+}
 
 function control(body) {
     window.addEventListener('keydown', function(ev) {

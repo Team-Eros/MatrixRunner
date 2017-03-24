@@ -3,7 +3,6 @@
 
 window.addEventListener('load', function() {
     // Menu
-    var data = ['Start', 'Credits', 'Score'];
 
     var contentMenu = document.getElementById('menu'),
         templateMenu = document.getElementById('menu-template').innerHTML;

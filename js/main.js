@@ -8,7 +8,7 @@ const FIELD_WIDTH = 1024,
     COORDS = { x: 0, y: 0 };
 
 window.addEventListener('load', function() {
-    debugger;
+
     var width = window.innerWidth,
         height = window.innerHeight,
         templateMenu = document.getElementById('menu-template').innerHTML;
@@ -93,8 +93,8 @@ window.addEventListener('load', function() {
             .update();
 
         // render and update background based on hero speed
-        // background.speed = FRAME_SPEED + heroBody.speed.x;
-        // background.pan();
+        background.speed = FRAME_SPEED + heroBody.speed.x;
+        background.pan();
 
         // render and update menu 
         menu
