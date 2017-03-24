@@ -82,25 +82,31 @@ window.addEventListener('load', function() {
     // TODO: create enemy spawner
 
     function gameLoop() {
-        // render and update player
-        var lastHeroCoords = heroBody
-            .applyGravity(GLOBAL_GRAVITY) // pulls object down
-            .decelerate(GLOBAL_FRICTION) // stops object horizontally
-            .move();
-        hero.switchHeroSprites();
-        heroSprite
-            .render(heroBody.coords, lastHeroCoords)
-            .update();
-
-        // render and update background based on hero speed
-        background.speed = FRAME_SPEED + heroBody.speed.x;
-        background.pan();
-
         // render and update menu 
-        menu
-            .menu()
-            .render()
-            .update();
+        if (menuContainer.className === '') {
+            menu
+                .menu()
+                .render()
+                .update();
+        }
+        // render and update player
+
+        if (gameContainer.className === '') {
+
+            var lastHeroCoords = heroBody
+                .applyGravity(GLOBAL_GRAVITY) // pulls object down
+                .decelerate(GLOBAL_FRICTION) // stops object horizontally
+                .move();
+            hero.switchHeroSprites();
+            heroSprite
+                .render(heroBody.coords, lastHeroCoords)
+                .update();
+
+            // render and update background based on hero speed
+            background.speed = FRAME_SPEED + heroBody.speed.x;
+            background.pan();
+        }
+
 
         // TODO: spawn buildings
         //     render and update buildings
