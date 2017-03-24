@@ -1,9 +1,18 @@
-body {
+body,
+div,
+canvas,
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+
+/*body {
     background: url(../assets/images/pageback.png) no-repeat center center fixed;
     background-color: black;
     margin: 0;
     padding: 0;
-}
+}*/
 
 #menu,
 #credits,
@@ -41,4 +50,64 @@ body {
 
 #player-canvas {
     z-index: 5;
+}
+
+
+/*// Menu style*/
+
+#menu {
+    overflow: hidden;
+    position: fixed;
+    margin: 0;
+    display: block;
+}
+
+canvas#menu-backgroound {
+    background: black;
+}
+
+.hide-img {
+    display: none;
+}
+
+div#menu .title-menu {
+    position: absolute;
+    width: 50%;
+    height: auto;
+    margin-top: 10%;
+    margin-left: 25%;
+}
+
+div#menu .title-menu img {
+    max-width: 100%;
+    height: auto;
+}
+
+div#menu .content-menu {
+    position: absolute;
+    width: 20%;
+    top: 50%;
+    left: 40%;
+    padding: 0.5em;
+    border: 2px solid #064305;
+    background: rgba(4, 26, 6, 0.62);
+}
+
+div#menu .content-menu ul {
+    list-style: none;
+    font-size: 18px;
+}
+
+div#menu .content-menu ul li {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2em;
+    margin: 0.5em 0;
+    text-align: center;
+    color: #c8dac8;
+}
+
+div#menu .content-menu ul li:hover {
+    color: rgb(231, 235, 230);
+    font-size: 2.5em;
+    text-shadow: rgb(7, 93, 52) 0px 0px 5px, rgb(33, 162, 42) 0px 0px 10px, rgb(11, 197, 84) 0px 0px 15px, rgb(31, 225, 80) 0px 0px 20px, rgb(16, 244, 73) 0px 0px 30px, rgb(10, 78, 1) 0px 0px 40px, rgb(73, 146, 26) 0px 0px 50px, rgb(35, 95, 9) 0px 0px 75px;
 }

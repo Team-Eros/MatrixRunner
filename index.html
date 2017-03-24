@@ -22,8 +22,29 @@
     <!--load spritesheets (better to use JSON and load with assetLoader) -->
     <img src="./assets/images/building.png" id="building-sprite" style="display: none">
     <img src="./assets/images/hero.png" id="hero-sprite" style="display: none">
-	<img src="./assets/images/background.png" id="background-sprite" style="display: none">
+    <img src="./assets/images/background.png" id="background-sprite" style="display: none">
 
+    <!--templates-->
+    <script id="menu-template" type="text/x-handlebars-template">
+
+        <div class="title-menu">
+            <img src="../picture template/matri_runner_title.png" alt="" class="title-img">
+        </div>
+
+        <div class="content-menu">
+            <ul>
+                <li>Start</li>
+                <li>Credits</li>
+                <li>Score</li>
+            </ul>
+        </div>
+        <!--<canvas id="menu-background"></canvas>-->
+        <img src="./assets/images/Matrix.png" id="backgroundEffect" class="hide-img">
+
+    </script>
+
+    </script>
+    <script src="./libs/handlebars-v4.0.5.js"></script>
     <!--game logic-->
     <script src="./js/assetLoader.js"></script>
     <script src="./js/utilities.js"></script>
