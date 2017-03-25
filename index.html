@@ -12,9 +12,11 @@
 
 <body>
     <!--user interface window states-->
-    <div id="menu"></div>
-    <div id="credits" class="hidden"></div>
-    <div id="scoreboard" class="hidden"></div>
+    <div id="menuContent">
+        <div id="menu"></div>
+        <div id="credits" class="hidden"></div>
+        <div id="scoreboard" class="hidden"></div>
+    </div>
     <div id="game-play" class="hidden"> </div>
     <div id="game-lose" class="hidden"></div>
     <div id="game-win" class="hidden"></div>
@@ -26,22 +28,28 @@
     <img src="./assets/images/Matrix.png" id="backgroundEffect" class="hide-img">
 
     <!--templates-->
-    <script id="menu-template" type="text/x-handlebars-template">
 
+    <!--MENU TEMPLATE-->
+    <script id="menu-template" type="text/x-handlebars-template">
         <div class="title-menu">
             <img src="./assets/images/matri_runner_title.png" alt="" class="title-img">
         </div>
 
         <div class="content-menu">
+            {{#if menu.length}}
             <ul class='dropdownItemContainer'>
-                <li id="startBtn" class="btn-active">Start</li>
-                <li id="creditsBtn">Credits</li>
-                <li id="scoreBtn">Score</li>
+                {{#each menu}} {{#if state.length}}
+                <li id='{{id}}' class="{{state}}">{{option}}</li>
+                {{else}}
+                <li id='{{id}}'>{{option}}</li>
+                {{/if}} {{/each}}
             </ul>
+            {{/if}}
         </div>
 
     </script>
 
+    <!--GAME PLAY MENU TEMPLATE-->
     <script id="game-play-menu" type="text/x-handlebars-template">
         <div class='pause-game btn-game'>
             <img src="./assets/images/pause.png" alt="">
@@ -50,12 +58,109 @@
         <div class="back-menu btn-game">
             <img src="./assets/images/go_menu.png" alt="">
         </div>
+
+        <div id="timer" class="timer-position credit-game">00:00</div>
+
+        <div id="score" class="score-position credit-game">00</div>
+    </script>
+
+    <!--CREDITS MENU TEMPLATE-->
+    <script id="credits-menu" type="text/x-handlebars-template">
+        <div class="title-menu">
+            <img src="./assets/images/eros_team.png" alt="" class="title-img">
+        </div>
+
+        <div class="art-content content-menu">
+            <div class="header">
+                <h3>Art</h3>
+            </div>
+            {{#if art.length}}
+            <ul>
+                {{#each art}}
+                <li>{{this}}</li>
+                {{/each}}
+            </ul>
+            {{/if}}
+        </div>
+
+        <div class="code-content content-menu">
+            <div class="header">
+                <h3>Code</h3>
+            </div>
+            {{#if code.length}}
+            <ul>
+                {{#each code}}
+                <li>{{this}}</li>
+                {{/each}}
+            </ul>
+            {{/if}}
+        </div>
+
+        <div class="produces-content content-menu">
+            <div class="header">
+                <h3>Produces</h3>
+            </div>
+
+            {{#if produces.length}}
+            <ul>
+                {{#each produces}}
+                <li>{{this}}</li>
+                {{/each}}
+            </ul>
+            {{/if}}
+        </div>
+
+        <!--// exit btn-->
+        <div class="back-menu btn-game">
+            <img src="./assets/images/go_menu.png" alt="">
+        </div>
+    </script>
+
+    <script id="scores-template" type="text/x-handlebars-template">
+        <div class="title-menu">
+            <img src="./assets/images/score.png" alt="" class="title-img">
+        </div>
+
+        <div class="table-content">
+            <div class="header-table">High Scores</div>
+            <div class="position-list col">
+                <ul>
+                    {{#each this}}
+                    <li>{{@index}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="name-list col">
+                <ul>
+                    {{#each this}}
+                    <li>{{name}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="time-list col">
+                <ul>
+                    {{#each this}}
+                    <li>{{time}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+
+            <div class="point-list col">
+                <ul>
+                    {{#each this}}
+                    <li>{{point}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
     </script>
 
     </script>
     <script src="./libs/handlebars-v4.0.5.js"></script>
     <script src="./libs/jquery-3.2.0.js"></script>
     <!--game logic-->
+
+    <script src="./js/clock.js"></script>
     <script src="./js/assetLoader.js"></script>
     <script src="./js/keyboard.js"></script>
     <script src="./js/utilities.js"></script>

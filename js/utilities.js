@@ -21,7 +21,7 @@ class GameState {
     }
 
     set template(value) {
-        this._template - value;
+        this._template = value;
     }
     get context() {
         return this._context;
@@ -74,6 +74,55 @@ class GameState {
     menu() {
         // menu state
         // go to play, credits, score state
+
+        // data 
+
+        var data = {
+            menu: [{
+                    option: 'Load',
+                    id: 'loadBtn',
+                    state: 'hidden'
+                },
+                {
+                    option: 'New Game',
+                    id: 'startBtn',
+                    state: 'btn-active menu-btn'
+                },
+                {
+                    option: 'Credits',
+                    id: 'creditsBtn',
+                    state: 'menu-btn'
+                },
+                {
+                    option: 'Scores',
+                    id: 'scoreBtn',
+                    state: 'menu-btn'
+                },
+
+                {
+                    option: 'Easy',
+                    id: 'easyLvl',
+                    state: 'hidden level-btn'
+                },
+
+                {
+                    option: 'Normal',
+                    id: 'normaLvl',
+                    state: 'hidden level-btn'
+                },
+                {
+                    option: 'Hard',
+                    id: 'hardLvl',
+                    state: 'hidden level-btn'
+                }
+            ]
+        };
+        // compile template 
+        var hbTemplate = Handlebars.compile(this.template);
+
+        this.content.innerHTML = hbTemplate(data);
+
+        // keyboards and mouse control
         controlMenu();
 
         return this;
@@ -82,13 +131,46 @@ class GameState {
 
         // credits state
         // go to menu state
-        this.contentMenu.appendChild(this.template);
+        var data = {
+            code: [
+                'Zahari Dimitrov',
+                'Doroteya Nikolova',
+                'Viliana Zhilkova',
+                'Ivan Iliev',
+                'Svetlomir Balevski',
+                'Anna Yanakieva',
+                'Cvetan Karadjov'
+            ],
+            art: [],
+            produces: ['Zahari Dimitrov']
+        };
+
+        var content = document.getElementById('credits');
+        var template = document.getElementById('credits-menu').innerHTML;
+
+        // compile template 
+        var hbTemplate = Handlebars.compile(template);
+
+        content.innerHTML = hbTemplate(data);
+
+        // keyboards and mouse control
+        controlCredits();
     }
+
+    // timer on game 
+    timer() {
+        var content = $('#timer');
+
+        return new Clock(content, 0);
+    }
+
     score() {
 
         // score board state
         // go to menu state
-        this.contentMenu.innerHTML = this.template;
+        $.getJSON("../scores.json", function() {
+            console.log("success");
+        })
     }
     pause() {
         // pause state

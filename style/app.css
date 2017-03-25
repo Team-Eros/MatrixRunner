@@ -1,147 +1,210 @@
-body,
-div,
-canvas,
-ul {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    background: url(../assets/images/pageback.png) no-repeat center center fixed;
-    background-color: black;
-    margin: 0;
-    padding: 0;
-}
-
-.hidden {
-    display: none;
-    align-content: center;
-    margin-top: 10px;
-}
-
-
-/*Game content style*/
-
-#game-play canvas {
-    padding: 0;
-    margin: auto;
-    display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
-#game-canvas {
-    border: 10px inset #999;
-    box-shadow: 0 0 40px 5px black;
-    /*TODO: render this gradient in the canvas using moving background bottom position*/
-    background: #588e79;
-    background: -moz-linear-gradient(top, #588e79 0%, #c5e0db 16%, #e8fcf6 30%, #f9f9f9 56%, #666666 56%, #000000 100%);
-    background: -webkit-linear-gradient(top, #588e79 0%, #c5e0db 16%, #e8fcf6 30%, #f9f9f9 56%, #666666 56%, #000000 100%);
-    background: linear-gradient(to bottom, #588e79 0%, #c5e0db 16%, #e8fcf6 30%, #f9f9f9 56%, #666666 56%, #000000 100%);
-    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#588e79', endColorstr='#000000', GradientType=0);
-    z-index: -1;
-}
-
-#game-play .btn-game {
-    position: absolute;
-    width: 3%;
-    height: auto;
-    padding: 0.5em;
-    top: 44%;
-    border: 1px solid green;
-    background: rgba(0, 10, 1, 0.58);
-}
-
-#game-play .pause-game {
-    right: 0px;
-    border: 1px solid green;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-#game-play .back-menu {
-    left: 0px;
-    border: 1px solid green;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
-
-#game-play .btn-game:hover {
-    background: rgba(11, 115, 21, 0.58);
-}
-
-#game-play .btn-game img {
-    position: relative;
-    width: 100%;
-    height: auto;
-}
-
-#player-canvas {
-    z-index: 5;
-}
-
-
-/*// Menu style*/
-
-#menu {
-    overflow: hidden;
-    position: fixed;
-    margin: 0;
-}
-
-canvas#menu-backgroound {
-    background: black;
-}
-
-.hide-img {
-    display: none;
-}
-
-div#menu .title-menu {
-    position: absolute;
-    width: 50%;
-    height: auto;
-    margin-top: 10%;
-    margin-left: 25%;
-}
-
-div#menu .title-menu img {
-    max-width: 100%;
-    height: auto;
-}
-
-div#menu .content-menu {
-    position: absolute;
-    width: 20%;
-    top: 50%;
-    left: 40%;
-    padding: 0.5em;
-    border: 2px solid #064305;
-    background: rgba(4, 26, 6, 0.62);
-}
-
-div#menu .content-menu ul {
-    list-style: none;
-    font-size: 18px;
-}
-
-div#menu .content-menu ul li {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 2em;
-    margin: 0.5em 0;
-    text-align: center;
-    color: #c8dac8;
-}
-
-
-/*on active btn */
-
-div#menu .content-menu ul li.btn-active {
-    cursor: pointer;
-    color: rgb(231, 235, 230);
-    font-size: 2.2em;
-    text-shadow: rgb(7, 93, 52) 0px 0px 5px, rgb(33, 162, 42) 0px 0px 10px, rgb(11, 197, 84) 0px 0px 15px, rgb(31, 225, 80) 0px 0px 20px, rgb(16, 244, 73) 0px 0px 30px, rgb(10, 78, 1) 0px 0px 40px, rgb(73, 146, 26) 0px 0px 50px, rgb(35, 95, 9) 0px 0px 75px;
-}
+    @font-face {
+        font-family: matrixFont;
+        src: url(MATRIX.ttf);
+    }
+    
+    body,
+    div,
+    canvas,
+    ul,
+    h1,
+    h2,
+    h3 {
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        font-family: matrixFont;
+        background: url(../assets/images/pageback.png) no-repeat center center fixed;
+        background-color: black;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .hidden {
+        display: none;
+        align-content: center;
+        margin-top: 10px;
+    }
+    /*Game content style*/
+    
+    #game-play canvas {
+        padding: 0;
+        margin: auto;
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    
+    #game-canvas {
+        border: 10px inset #999;
+        box-shadow: 0 0 40px 5px black;
+        /*TODO: render this gradient in the canvas using moving background bottom position*/
+        background: #588e79;
+        background: -moz-linear-gradient(top, #588e79 0%, #c5e0db 16%, #e8fcf6 30%, #f9f9f9 56%, #666666 56%, #000000 100%);
+        background: -webkit-linear-gradient(top, #588e79 0%, #c5e0db 16%, #e8fcf6 30%, #f9f9f9 56%, #666666 56%, #000000 100%);
+        background: linear-gradient(to bottom, #588e79 0%, #c5e0db 16%, #e8fcf6 30%, #f9f9f9 56%, #666666 56%, #000000 100%);
+        filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#588e79', endColorstr='#000000', GradientType=0);
+        z-index: -1;
+    }
+    
+    .btn-game {
+        position: absolute;
+        width: 3%;
+        height: auto;
+        padding: 0.5em;
+        top: 44%;
+        border: 1px solid green;
+        background: rgba(0, 10, 1, 0.58);
+    }
+    
+    #game-play .pause-game {
+        right: 0px;
+        border: 1px solid green;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+    
+    .back-menu {
+        left: 0px;
+        border: 1px solid green;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+    
+    .btn-game:hover {
+        background: rgba(11, 115, 21, 0.58);
+    }
+    
+    .btn-game img {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+    
+    #game-play .credit-game {
+        position: absolute;
+        top: 17%;
+        color: white;
+        font-size: 34px;
+    }
+    
+    #game-play .timer-position {
+        left: 18%;
+    }
+    
+    #game-play .score-position {
+        right: 18%;
+    }
+    
+    #player-canvas {
+        z-index: 5;
+    }
+    /*// Menu style*/
+    
+    #menuContent {
+        overflow: hidden;
+        position: fixed;
+        margin: 0;
+    }
+    
+    canvas#menu-backgroound {
+        background: black;
+    }
+    
+    .hide-img {
+        display: none;
+    }
+    
+    div#menu .title-menu,
+    div#credits .title-menu {
+        position: absolute;
+        width: 50%;
+        height: auto;
+        margin-top: 10%;
+        margin-left: 25%;
+    }
+    
+    div#menu .title-menu img,
+    div#credits .title-menu img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    div#menu .content-menu {
+        position: absolute;
+        width: 20%;
+        top: 50%;
+        left: 40%;
+        padding: 0.5em;
+        border: 2px solid #064305;
+        background: rgba(4, 26, 6, 0.62);
+    }
+    
+    div#menu .content-menu ul {
+        list-style: none;
+        font-size: 18px;
+    }
+    
+    div#menu .content-menu ul li {
+        font-size: 2em;
+        margin: 0.5em 0;
+        text-align: center;
+        color: #c8dac8;
+    }
+    /*on active btn */
+    
+    div#menu .content-menu ul li.btn-active {
+        cursor: pointer;
+        color: rgb(231, 235, 230);
+        font-size: 2.2em;
+        text-shadow: rgb(7, 93, 52) 0px 0px 5px, rgb(33, 162, 42) 0px 0px 10px, rgb(11, 197, 84) 0px 0px 15px, rgb(31, 225, 80) 0px 0px 20px, rgb(16, 244, 73) 0px 0px 30px, rgb(10, 78, 1) 0px 0px 40px, rgb(73, 146, 26) 0px 0px 50px, rgb(35, 95, 9) 0px 0px 75px;
+    }
+    /*credits style*/
+    
+    div#credits .content-menu {
+        position: absolute;
+        color: white;
+        top: 45%;
+        font-size: 20px;
+        width: 20%;
+        padding: 0.5em;
+        border: 2px solid #064305;
+        background: rgba(4, 26, 6, 0.62);
+    }
+    
+    div#credits .produces-content {
+        left: 40%;
+        top: 55%;
+    }
+    
+    div#credits .art-content {
+        left: 10%;
+    }
+    
+    div#credits .code-content {
+        right: 10%;
+    }
+    
+    div#credits .content-menu .header {
+        font-size: 16px;
+    }
+    
+    div#credits .content-menu .header h3 {
+        font-size: 2em;
+        text-align: center;
+        padding: 0.325em;
+    }
+    
+    div#credits .content-menu ul {
+        list-style: none;
+    }
+    
+    div#credits .content-menu ul li {
+        padding: 0.5em;
+        text-align: center;
+    }

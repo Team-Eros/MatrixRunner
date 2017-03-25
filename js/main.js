@@ -10,16 +10,20 @@ const FIELD_WIDTH = 1024,
 window.addEventListener('load', function() {
 
     var width = window.innerWidth,
-        height = window.innerHeight;
-    debugger;
+        height = window.innerHeight,
+        gameTimer = 0;
+
     // templates
     var templateMenu = document.getElementById('menu-template').innerHTML,
         templateGameMenu = document.getElementById('game-play-menu').innerHTML;
+
+    // Handlebars 
     // define variables
     var gameContainer = document.getElementById("game-play"),
+        menuWrapper = document.getElementById('menuContent'),
         menuContainer = document.getElementById("menu");
 
-    menuContainer.innerHTML = templateMenu;
+    // menuContainer.innerHTML = templateMenu;
     gameContainer.innerHTML = templateGameMenu;
 
     // create canvas and context (main, player, enemies)
@@ -49,7 +53,6 @@ window.addEventListener('load', function() {
     gameContainer.appendChild(gameCanvas);
     gameContainer.appendChild(playerCanvas);
     gameContainer.appendChild(enemyCanvas);
-    menuContainer.appendChild(menuCanvas);
 
     // create contexts and load images
     var gameCtx = gameCanvas.getContext("2d"),
@@ -73,13 +76,27 @@ window.addEventListener('load', function() {
 
     // create menu background
     var menu = new GameState(menuContainer, templateMenu, COORDS, menuCtx, 1);
+    menu.menu();
+    menu.credits();
+    menu.score()
+
+    // start timer game
+    if (menuContainer.className === '') {
+        gameTimer = menu.timer();
+        gameTimer.start();
+
+    }
+
+    // add canvas to dom
+    menuWrapper.appendChild(menuCanvas);
+
+
     // player and player controls
     var hero = new Player(playerCtx),
         heroBody = hero.rigidBody,
         heroSprite = hero.sprite;
-
     control(heroBody);
-    gameMenu();
+    gameMenu(gameTimer);
 
     // TODO: create buildings spawner
 
@@ -89,7 +106,6 @@ window.addEventListener('load', function() {
         // render and update menu 
         if (menuContainer.className === '') {
             menu
-                .menu()
                 .render()
                 .update();
         }
