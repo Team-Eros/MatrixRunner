@@ -102,6 +102,21 @@ window.addEventListener('load', function() {
 
     // TODO: create enemy spawner
 
+    let enemy = new Enemy(enemyCtx),
+    enemyBody = enemy.rigidBody,
+    enemySprite = enemy.sprite;
+
+    // TODO: create enemies Pool
+    var enemiesPool = [];
+    enemiesPool.push(enemy);
+    // collision function - enemy and hero
+    function collides(firstObjectCoords, firstObjectSize, secondObjectCoords, secondObjectSize) {
+            return (firstObjectCoords.x > secondObjectCoords.x - secondObjectSize.width + 80 &&
+                    firstObjectCoords.x - firstObjectSize.width/2  < secondObjectCoords.x &&
+                    firstObjectCoords.y > secondObjectCoords.y - secondObjectSize.height/2)
+    }
+
+
     function gameLoop() {
         // render and update menu 
         if (menuContainer.className === '') {
@@ -125,14 +140,56 @@ window.addEventListener('load', function() {
             // render and update background based on hero speed
             background.speed = FRAME_SPEED + heroBody.speed.x;
             background.pan();
+
+            // TODO: spawn enemies
+            // render and update enemies
+            let enemiesInterval = 5, 
+                newSpeed = 0.5;
+
+                enemiesPool[0].move();
+                if(enemiesPool[0].coords.x <= -100) {
+                    enemiesPool.shift();                   
+                }
+                else if(gameTimer._seconds == enemiesInterval) {
+                    let newEnemy = new Enemy(enemyCtx);
+                    enemiesPool.push(new Enemy(enemyCtx));
+                    enemiesPool[enemiesPool.length - 1].speed += newSpeed;
+                        //enemiesPool[enemiesPool.length - 1].move();
+                    enemiesInterval += enemiesInterval;
+                    console.log("interval", enemiesInterval);
+                    newSpeed += 0.5;
+                }
         }
 
 
         // TODO: spawn buildings
         //     render and update buildings
-        // TODO: spawn enemies
-        //     render and update enemies
+
         // check for collision and change states
+        // check for collision - enemy and hero
+       if(collides(heroBody.coords, {width: heroBody.width, height: heroBody.height}, enemy.coords, {width: enemyBody.width, height: enemyBody.height})) {
+            //hero.sprite = null;
+
+            // return to menu
+            $('#game-play').addClass('hidden');
+            $('#menu').removeClass('hidden');
+            
+            console.log(true);
+                        
+            return;
+        } else {
+            console.log(false);
+            
+            //console.log(enemiesPool[enemiesPool.length - 1].coords.x);
+            //console.log("length ", enemiesPool.length);
+            //console.log("speed", enemiesPool[enemiesPool.length - 1].speed );
+            //console.log(gameTimer);
+            //console.log(enemiesPool[enemiesPool.length - 1]);
+            //console.log("hero y", heroBody.coords.y);
+            //console.log("enemy y ", enemy.coords.y - enemyBody.height/2);
+            //console.log("hero x - width", heroBody.coords.x - heroBody.width)
+            //console.log("enemy coords x", enemy.coords.x)
+        }
 
         window.requestAnimationFrame(gameLoop);
     }

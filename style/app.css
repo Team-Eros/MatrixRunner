@@ -104,6 +104,10 @@
     #player-canvas {
         z-index: 5;
     }
+
+    #enemy-canvas {
+    z-index: 5;
+}
     /*// Menu style*/
     
     #menuContent {
