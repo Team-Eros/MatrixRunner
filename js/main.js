@@ -30,7 +30,8 @@ window.addEventListener('load', function() {
     var gameCanvas = document.createElement("canvas"),
         playerCanvas = document.createElement("canvas"),
         enemyCanvas = document.createElement("canvas"),
-        menuCanvas = document.createElement('canvas');
+        menuCanvas = document.createElement('canvas'),
+        buildingsCanvas = document.createElement('canvas');
 
     // setup canvas nodes
     gameCanvas.id = "game-canvas";
@@ -49,6 +50,10 @@ window.addEventListener('load', function() {
     menuCanvas.width = width;
     menuCanvas.height = height;
 
+    buildingsCanvas.id = "buildings-canvas";
+    buildingsCanvas.width = FIELD_WIDTH;
+    buildingsCanvas.height = FIELD_HEIGHT;
+
     // add canvas to dom
     gameContainer.appendChild(gameCanvas);
     gameContainer.appendChild(playerCanvas);
@@ -58,7 +63,8 @@ window.addEventListener('load', function() {
     var gameCtx = gameCanvas.getContext("2d"),
         playerCtx = playerCanvas.getContext("2d"),
         enemyCtx = enemyCanvas.getContext("2d"),
-        menuCtx = menuCanvas.getContext('2d');
+        menuCtx = menuCanvas.getContext('2d'),
+        buildingsContex = buildingsCanvas.getContext('2d');
 
     // fill background
     menuCtx.beginPath();
@@ -99,21 +105,27 @@ window.addEventListener('load', function() {
     gameMenu(gameTimer);
 
     // TODO: create buildings spawner
+    var buildingArray = [],
+        buildingTime = 0,
+        sheetNumber = 0,
+        buildingHeight = 2,
+        building1 = new Buildings(3, buildingsContex, { x: FIELD_WIDTH / 4, y: FIELD_HEIGHT - buildSprite.height / 2 }),
+        buildingTwoImages = 1;
 
     // TODO: create enemy spawner
 
     let enemy = new Enemy(enemyCtx),
-    enemyBody = enemy.rigidBody,
-    enemySprite = enemy.sprite;
+        enemyBody = enemy.rigidBody,
+        enemySprite = enemy.sprite;
 
     // TODO: create enemies Pool
     var enemiesPool = [];
     enemiesPool.push(enemy);
     // collision function - enemy and hero
     function collides(firstObjectCoords, firstObjectSize, secondObjectCoords, secondObjectSize) {
-            return (firstObjectCoords.x > secondObjectCoords.x - secondObjectSize.width + 80 &&
-                    firstObjectCoords.x - firstObjectSize.width/2  < secondObjectCoords.x &&
-                    firstObjectCoords.y > secondObjectCoords.y - secondObjectSize.height/2)
+        return (firstObjectCoords.x > secondObjectCoords.x - secondObjectSize.width + 80 &&
+            firstObjectCoords.x - firstObjectSize.width / 2 < secondObjectCoords.x &&
+            firstObjectCoords.y > secondObjectCoords.y - secondObjectSize.height / 2)
     }
 
 
@@ -143,43 +155,92 @@ window.addEventListener('load', function() {
 
             // TODO: spawn enemies
             // render and update enemies
-            let enemiesInterval = 5, 
+            let enemiesInterval = 5,
                 newSpeed = 0.5;
 
-                enemiesPool[0].move();
-                if(enemiesPool[0].coords.x <= -100) {
-                    enemiesPool.shift();                   
-                }
-                else if(gameTimer._seconds == enemiesInterval) {
-                    let newEnemy = new Enemy(enemyCtx);
-                    enemiesPool.push(new Enemy(enemyCtx));
-                    enemiesPool[enemiesPool.length - 1].speed += newSpeed;
-                        //enemiesPool[enemiesPool.length - 1].move();
-                    enemiesInterval += enemiesInterval;
-                    console.log("interval", enemiesInterval);
-                    newSpeed += 0.5;
-                }
+            enemiesPool[0].move();
+            if (enemiesPool[0].coords.x <= -100) {
+                enemiesPool.shift();
+            } else if (gameTimer._seconds == enemiesInterval) {
+                let newEnemy = new Enemy(enemyCtx);
+                enemiesPool.push(new Enemy(enemyCtx));
+                enemiesPool[enemiesPool.length - 1].speed += newSpeed;
+                //enemiesPool[enemiesPool.length - 1].move();
+                enemiesInterval += enemiesInterval;
+                console.log("interval", enemiesInterval);
+                newSpeed += 0.5;
+            }
         }
 
 
         // TODO: spawn buildings
         //     render and update buildings
 
+        for (let i = 0; i < buildingArray.length; i += 1) {
+
+            let building = buildingArray[i];
+
+            var lastBuildingCoordinates = building.rigidBody.move();
+
+            building.sprite
+                .render(building.rigidBody.coords, lastBuildingCoordinates)
+                .update();
+        }
+        //spawn Buildings
+        if (buildingTime === 0) {
+
+            if (buildingTwoImages = 2) {
+                buildingArray.push(building1)
+                buildingTwoImages - +1;
+            }
+
+
+            buildingArray.push(new Buildings(sheetNumber, buildingsContex, { x: FIELD_WIDTH, y: FIELD_HEIGHT - buildSprite.height / buildingHeight }))
+
+            // Making random buildings height
+            if (Math.random() <= 0.5) {
+                buildingHeight += 0.5
+            } else {
+                buildingHeight -= 0.5
+            }
+
+            if (buildingHeight > 3.5) {
+                buildingHeight = 1.5
+            }
+
+            if (buildingHeight < 1.4) {
+                buildingHeight = 1.5
+            }
+
+            //switch building sheets
+            sheetNumber += 1;
+            if (sheetNumber > 3) {
+                sheetNumber = 0;
+            }
+        }
+
+        // buildingTime = space between buildings
+        buildingTime += 1;
+        if (buildingTime === 150) {
+            buildingTime = 0;
+        }
+
+
         // check for collision and change states
         // check for collision - enemy and hero
-       if(collides(heroBody.coords, {width: heroBody.width, height: heroBody.height}, enemy.coords, {width: enemyBody.width, height: enemyBody.height})) {
+        if (collides(heroBody.coords, { width: heroBody.width, height: heroBody.height }, enemy.coords, { width: enemyBody.width, height: enemyBody.height })) {
             //hero.sprite = null;
 
             // return to menu
             $('#game-play').addClass('hidden');
             $('#menu').removeClass('hidden');
-            
+
             console.log(true);
-                        
+
             return;
         } else {
             console.log(false);
-            
+
             //console.log(enemiesPool[enemiesPool.length - 1].coords.x);
             //console.log("length ", enemiesPool.length);
             //console.log("speed", enemiesPool[enemiesPool.length - 1].speed );
