@@ -35,7 +35,8 @@ window.addEventListener('load', function() {
         frontBgCanvas = document.createElement("canvas"),
         playerCanvas = document.createElement("canvas"),
         enemyCanvas = document.createElement("canvas"),
-        menuCanvas = document.createElement('canvas');
+        menuCanvas = document.createElement('canvas'),
+        buildingsCanvas = document.createElement('canvas');
 
     // setup canvas nodes
     gameCanvas.id = "game-canvas";
@@ -58,6 +59,10 @@ window.addEventListener('load', function() {
     menuCanvas.width = width;
     menuCanvas.height = height;
 
+    buildingsCanvas.id = "buildings-canvas";
+    buildingsCanvas.width = FIELD_WIDTH;
+    buildingsCanvas.height = FIELD_HEIGHT;
+
     // add canvas to dom
     gameContainer.appendChild(gameCanvas);
     gameContainer.appendChild(frontBgCanvas);
@@ -69,7 +74,8 @@ window.addEventListener('load', function() {
         frontBgCtx = frontBgCanvas.getContext("2d"),
         playerCtx = playerCanvas.getContext("2d"),
         enemyCtx = enemyCanvas.getContext("2d"),
-        menuCtx = menuCanvas.getContext('2d');
+        menuCtx = menuCanvas.getContext('2d'),
+        buildingsContex = buildingsCanvas.getContext('2d');
 
     // fill background
     menuCtx.beginPath();
@@ -123,6 +129,12 @@ window.addEventListener('load', function() {
     gameMenu(gameTimer);
 
     // TODO: create buildings spawner
+    var buildingArray = [],
+        buildingTime = 0,
+        sheetNumber = 0,
+        buildingHeight = 2,
+        building1 = new Buildings(3, buildingsContex, { x: FIELD_WIDTH / 4, y: FIELD_HEIGHT - buildSprite.height / 2 }),
+        buildingTwoImages = 1;
 
     // TODO: create enemy spawner
 
@@ -140,7 +152,6 @@ window.addEventListener('load', function() {
              firstObjectCoords.x - firstObjectSize.width / 2 < secondObjectCoords.x &&
              firstObjectCoords.y > secondObjectCoords.y - secondObjectSize.height / 2)
      }*/
-
 
     function gameLoop() {
         // render and update menu 
@@ -191,11 +202,62 @@ window.addEventListener('load', function() {
         // TODO: spawn buildings
         //     render and update buildings
 
+        for (let i = 0; i < buildingArray.length; i += 1) {
+
+            let building = buildingArray[i];
+
+            var lastBuildingCoordinates = building.rigidBody.move();
+
+            building.sprite
+                .render(building.rigidBody.coords, lastBuildingCoordinates)
+                .update();
+        }
+        //spawn Buildings
+        if (buildingTime === 0) {
+
+            if (buildingTwoImages = 2) {
+                buildingArray.push(building1)
+                buildingTwoImages - +1;
+            }
+
+
+            buildingArray.push(new Buildings(sheetNumber, buildingsContex, { x: FIELD_WIDTH, y: FIELD_HEIGHT - buildSprite.height / buildingHeight }))
+
+            // Making random buildings height
+            if (Math.random() <= 0.5) {
+                buildingHeight += 0.5
+            } else {
+                buildingHeight -= 0.5
+            }
+
+            if (buildingHeight > 3.5) {
+                buildingHeight = 1.5
+            }
+
+            if (buildingHeight < 1.4) {
+                buildingHeight = 1.5
+            }
+
+            //switch building sheets
+            sheetNumber += 1;
+            if (sheetNumber > 3) {
+                sheetNumber = 0;
+            }
+        }
+
+        // buildingTime = space between buildings
+        buildingTime += 1;
+        if (buildingTime === 150) {
+            buildingTime = 0;
+        }
+
+
         // check for collision and change states
         // check for collision - enemy and hero
 
         /*if (heroBody.coords, { width: heroBody.width, height: heroBody.height }, enemy.coords, { width: enemyBody.width, height: enemyBody.height }))*/
         if (heroBody.collidesWith(enemyBody)) {
+
             //hero.sprite = null;
 
             // return to menu
