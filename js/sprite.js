@@ -15,10 +15,10 @@ class Sprite {
     // renders loop animation
     render(drawCoord, clearCoord) {
         this.context.clearRect(
-            clearCoord.x,
-            clearCoord.y,
-            this.width,
-            this.height
+            clearCoord.x - 5,
+            clearCoord.y - 5,
+            this.width + 10,
+            this.height + 10
         );
 
         this.context.drawImage(

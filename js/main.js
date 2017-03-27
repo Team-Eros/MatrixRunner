@@ -4,8 +4,12 @@
 const FIELD_WIDTH = 1024,
     FIELD_HEIGHT = 512,
     GLOBAL_FRICTION = 0.3,
-    GLOBAL_GRAVITY = 0.5,
-    COORDS = { x: 0, y: 0 };
+    GLOBAL_GRAVITY = 0.4,
+    COORDS = { x: 0, y: 0 },
+    REAR_BG_SPEED = 1,
+    REAR_BG_POSITION_Y = 35,
+    FRONT_BG_SPEED = 2,
+    FRONT_BG_POSITION_Y = 80;
 
 window.addEventListener('load', function() {
 
@@ -28,6 +32,7 @@ window.addEventListener('load', function() {
 
     // create canvas and context (main, player, enemies)
     var gameCanvas = document.createElement("canvas"),
+        frontBgCanvas = document.createElement("canvas"),
         playerCanvas = document.createElement("canvas"),
         enemyCanvas = document.createElement("canvas"),
         menuCanvas = document.createElement('canvas'),
@@ -37,6 +42,10 @@ window.addEventListener('load', function() {
     gameCanvas.id = "game-canvas";
     gameCanvas.width = FIELD_WIDTH;
     gameCanvas.height = FIELD_HEIGHT;
+
+    frontBgCanvas.id = "frontbg-canvas";
+    frontBgCanvas.width = FIELD_WIDTH;
+    frontBgCanvas.height = FIELD_HEIGHT;
 
     playerCanvas.id = "player-canvas";
     playerCanvas.width = FIELD_WIDTH;
@@ -56,11 +65,13 @@ window.addEventListener('load', function() {
 
     // add canvas to dom
     gameContainer.appendChild(gameCanvas);
+    gameContainer.appendChild(frontBgCanvas);
     gameContainer.appendChild(playerCanvas);
     gameContainer.appendChild(enemyCanvas);
 
     // create contexts and load images
     var gameCtx = gameCanvas.getContext("2d"),
+        frontBgCtx = frontBgCanvas.getContext("2d"),
         playerCtx = playerCanvas.getContext("2d"),
         enemyCtx = enemyCanvas.getContext("2d"),
         menuCtx = menuCanvas.getContext('2d'),
@@ -78,13 +89,26 @@ window.addEventListener('load', function() {
     // TODO: create keyboard control
 
     //create background
-    var background = new Background(gameCtx);
+    var rearBgImg = document.getElementById("background-sprite");
+    var rearBgPosition = { x: 0, y: REAR_BG_POSITION_Y };
+    var background = new Background(
+        gameCtx,
+        rearBgPosition,
+        REAR_BG_SPEED,
+        rearBgImg);
+    var frontBgImg = document.getElementById("front-background");
+    var frontBgPosition = { x: 0, y: FRONT_BG_POSITION_Y };
+    var frontBackground = new Background(
+        frontBgCtx,
+        frontBgPosition,
+        FRONT_BG_SPEED,
+        frontBgImg);
 
     // create menu background
     var menu = new GameState(menuContainer, templateMenu, COORDS, menuCtx, 1);
     menu.menu();
     menu.credits();
-    menu.score()
+    menu.score();
 
     // start timer game
     if (menuContainer.className === '') {
@@ -121,13 +145,13 @@ window.addEventListener('load', function() {
     // TODO: create enemies Pool
     var enemiesPool = [];
     enemiesPool.push(enemy);
-    // collision function - enemy and hero
-    function collides(firstObjectCoords, firstObjectSize, secondObjectCoords, secondObjectSize) {
-        return (firstObjectCoords.x > secondObjectCoords.x - secondObjectSize.width + 80 &&
-            firstObjectCoords.x - firstObjectSize.width / 2 < secondObjectCoords.x &&
-            firstObjectCoords.y > secondObjectCoords.y - secondObjectSize.height / 2)
-    }
 
+    /* // collision function - enemy and hero (use rigidBody.collideWith(otherRigidBody))
+     function collides(firstObjectCoords, firstObjectSize, secondObjectCoords, secondObjectSize) {
+         return (firstObjectCoords.x > secondObjectCoords.x - secondObjectSize.width + 80 &&
+             firstObjectCoords.x - firstObjectSize.width / 2 < secondObjectCoords.x &&
+             firstObjectCoords.y > secondObjectCoords.y - secondObjectSize.height / 2)
+     }*/
 
     function gameLoop() {
         // render and update menu 
@@ -150,8 +174,10 @@ window.addEventListener('load', function() {
                 .update();
 
             // render and update background based on hero speed
-            background.speed = FRAME_SPEED + heroBody.speed.x;
+            background.speed = REAR_BG_SPEED + heroBody.speed.x;
             background.pan();
+            frontBackground.speed = FRONT_BG_SPEED + heroBody.speed.x;
+            frontBackground.pan();
 
             // TODO: spawn enemies
             // render and update enemies
@@ -228,7 +254,10 @@ window.addEventListener('load', function() {
 
         // check for collision and change states
         // check for collision - enemy and hero
-        if (collides(heroBody.coords, { width: heroBody.width, height: heroBody.height }, enemy.coords, { width: enemyBody.width, height: enemyBody.height })) {
+
+        /*if (heroBody.coords, { width: heroBody.width, height: heroBody.height }, enemy.coords, { width: enemyBody.width, height: enemyBody.height }))*/
+        if (heroBody.collidesWith(enemyBody)) {
+
             //hero.sprite = null;
 
             // return to menu
