@@ -44,12 +44,16 @@
         border: 10px inset #999;
         box-shadow: 0 0 40px 5px black;
         /*TODO: render this gradient in the canvas using moving background bottom position*/
-        background: #588e79;
-        background: -moz-linear-gradient(top, #588e79 0%, #c5e0db 16%, #e8fcf6 30%, #f9f9f9 56%, #666666 56%, #000000 100%);
-        background: -webkit-linear-gradient(top, #588e79 0%, #c5e0db 16%, #e8fcf6 30%, #f9f9f9 56%, #666666 56%, #000000 100%);
-        background: linear-gradient(to bottom, #588e79 0%, #c5e0db 16%, #e8fcf6 30%, #f9f9f9 56%, #666666 56%, #000000 100%);
-        filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#588e79', endColorstr='#000000', GradientType=0);
-        z-index: -1;
+        background: rgb(23, 117, 54);
+        background: -moz-linear-gradient(top, rgba(23, 117, 54, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(61, 61, 61, 1) 51%, rgba(61, 61, 61, 1) 100%);
+        background: -webkit-linear-gradient(top, rgba(23, 117, 54, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(61, 61, 61, 1) 51%, rgba(61, 61, 61, 1) 100%);
+        background: linear-gradient(to bottom, rgba(23, 117, 54, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(61, 61, 61, 1) 51%, rgba(61, 61, 61, 1) 100%);
+        filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#177536', endColorstr='#3d3d3d', GradientType=0);
+        z-index: -10;
+    }
+    
+    #frontbg-canvas {
+        z-index: -9;
     }
     
     .btn-game {
@@ -104,10 +108,10 @@
     #player-canvas {
         z-index: 5;
     }
-
+    
     #enemy-canvas {
-    z-index: 5;
-}
+        z-index: 5;
+    }
     /*// Menu style*/
     
     #menuContent {

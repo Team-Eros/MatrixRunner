@@ -1,21 +1,12 @@
-// extends entity
-
-// create background sprites
-// create background renderer
-// update background
-
-
 const FRAME_SPEED = 4,
     VERTICAL_TOP_POSITION = 50;
-
-var backgroundImg = document.getElementById("background-sprite");
 
 class Background {
     constructor(backgroundCtx, coords, speed, image) {
         this.ctx = backgroundCtx;
         this.coords = coords || { x: 0, y: VERTICAL_TOP_POSITION };
         this.speed = speed || FRAME_SPEED;
-        this.image = backgroundImg;
+        this.image = image || backgroundImg;
         this.firstSprite = this.createSprite();
         this.secondSprite = this.createSprite();
     }
@@ -41,22 +32,6 @@ class Background {
         );
     }
 
-    /*
-        render() {
-            this.backgroundCtx.drawImage(
-                this.image,
-                this.coords.x,
-                this.coords.y
-            );
-            this.backgroundCtx.drawImage(
-                this.image,
-                this.image.width - Math.abs(this.coords.x),
-                this.coords.y
-            );
-            return this;
-        };
-    */
-
     pan() {
         let oldFirstPosition = { x: this.coords.x, y: this.coords.y },
             oldSecondPosition = { x: oldFirstPosition.x + this.image.width, y: oldFirstPosition.y + this.image.y };
@@ -78,5 +53,5 @@ class Background {
         }
 
         return this;
-    };
-};
+    }
+}

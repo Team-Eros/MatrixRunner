@@ -195,8 +195,8 @@ function control(body) {
     });
 
     function jump() {
-        let floor = FIELD_HEIGHT - body.height - 26;
-        if (body.coords.y < floor - body.height || body.speed.y > 0) {
+        let floor = FIELD_HEIGHT - body.height;
+        if (body.coords.y < floor - 2 * body.height || body.speed.y > 0) {
             return;
         }
         body.speed.y = -body.impulse.y;

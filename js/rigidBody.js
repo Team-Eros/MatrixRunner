@@ -1,10 +1,3 @@
-// creates object from provided options {position, size, speed, impulse, acceleration...}
-
-// has methods
-
-// move
-// collide
-
 class RigidBody {
     constructor(coords, speed, width, height, impulse) {
         this.coords = { x: coords.x, y: coords.y };
@@ -47,7 +40,7 @@ class RigidBody {
 
     applyGravity(gravity) {
         // needs refactoring
-        let floor = FIELD_HEIGHT - this.height - 26;
+        let floor = FIELD_HEIGHT - 100;
         if (this.coords.y === floor) {
             return this;
         }
@@ -66,8 +59,8 @@ class RigidBody {
 
     collidesWith(otherBody) {
         // needs refactoring
-        var thisRadius = (this.width + this.height) / 4,
-            otherRadius = (otherBody.width + otherBody.height) / 4,
+        var thisRadius = (this.width + this.height) / 6,
+            otherRadius = (otherBody.width + otherBody.height) / 6,
             x1 = this.coords.x + this.width / 2,
             y1 = this.coords.y + this.height / 2,
             x2 = otherBody.coords.x + otherBody.width / 2,
