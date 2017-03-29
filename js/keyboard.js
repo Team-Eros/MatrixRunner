@@ -231,7 +231,8 @@ function controlPlayer(body, floor) {
                 break;
             case 39:
                 //body.speed.x = body.impulse.x;
-                globalSpeedX = RUNNING_SPEED;
+                globalSpeedX = globalRunSpeed;
+                gloabalBulletSpeed = NORMAL_BULLET_SPEED + globalRunSpeed - RUNNING_SPEED;
                 break;
             case 40:
                 globalSpeedX = 0;
