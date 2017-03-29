@@ -146,14 +146,16 @@ window.addEventListener('load', function() {
     // TODO: create enemies Pool
     var enemiesPool = [];
     enemiesPool.push(enemy);
+    var startInterval = 300;
 
     function addEnemy() {
         if(enemiesPool.length) {
             let currentEnemy = enemiesPool[enemiesPool.length - 1];
-            if(currentEnemy.rigidBody.coords.x == 600) {
-            let newEnemy = new Enemy(enemyCtx);
-
+            
+            if(currentEnemy.rigidBody.coords.x == startInterval) {
+            let newEnemy = new Enemy(enemyCtx);            
             enemiesPool.push(newEnemy);
+            startInterval += 25;
             }
 
         } else {
@@ -252,26 +254,27 @@ window.addEventListener('load', function() {
             for(let i = 0; i < enemiesPool.length; i++) {
                 let currentEnemy = enemiesPool[i];
                 currentEnemy.move();
+ 
                 if(currentEnemy.rigidBody.coords.x < -currentEnemy.rigidBody.width) {
                     enemiesPool.shift();
                     i--;
                     continue;
                 }
                 //collision
-                if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody)) {
+                if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody) || 
+                (currentEnemy.bullet && heroBody.collidesWith(currentEnemy.bullet))) {
 
                 // return to menu
                 $('#game-play').addClass('hidden');
-                $('#menu').removeClass('hidden');
+                $('#menu-content').removeClass('hidden');
 
-                console.log(true);               
 
                 return;
-                } /*else {
-                    console.log(enemiesPool.length);
-                    console.log(currentEnemy.rigidBody.coords.x);
-                    console.log(currentEnemy.rigidBody.width);
-                }*/
+                console.log(true);               
+
+                } else {
+                    console.log(startInterval);
+                 }
             }
         }
         // check for collision and change states

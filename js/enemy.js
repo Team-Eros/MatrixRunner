@@ -31,6 +31,8 @@ class Bullet {
         this.context = context;
         this.coords = coords || { x: 100, y: 100 };
         this.speed = speed || { x: 0, y: 0 };
+        this.width = bulletSheet.width || 0;
+        this.height = bulletSheet.height || 0;
         this.image = image || bulletSheet;
         this.sprite = this.createBullet();
     }
