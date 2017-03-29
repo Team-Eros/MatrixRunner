@@ -150,14 +150,16 @@ window.addEventListener('load', function() {
     // TODO: create enemies Pool
     var enemiesPool = [];
     enemiesPool.push(enemy);
+    var startInterval = 300;
 
     function addEnemy() {
-        if (enemiesPool.length) {
+        if(enemiesPool.length) {
             let currentEnemy = enemiesPool[enemiesPool.length - 1];
-            if (currentEnemy.rigidBody.coords.x == 600) {
-                let newEnemy = new Enemy(enemyCtx);
-
-                enemiesPool.push(newEnemy);
+            
+            if(currentEnemy.rigidBody.coords.x == startInterval) {
+            let newEnemy = new Enemy(enemyCtx);            
+            enemiesPool.push(newEnemy);
+            startInterval += 25;
             }
 
         } else {
@@ -169,7 +171,6 @@ window.addEventListener('load', function() {
     storage(saveScore);
     // storage
     function saveScore() {
-        debugger;
 
         var input = document.querySelector("#playerName input");
         var name = input.value;
@@ -247,20 +248,20 @@ window.addEventListener('load', function() {
             background.speed = REAR_BG_SPEED + heroBody.speed.x;
             background.pan();
             frontBackground.speed = FRONT_BG_SPEED + heroBody.speed.x;
-            frontBackground.pan();
+            frontBackground.pan(); 
 
             // TODO: spawn buildings
             //     render and update buildings
 
             for (let i = 0; i < buildingArray.length; i += 1) {
 
-                let building = buildingArray[i];
+            let building = buildingArray[i];
 
-                var lastBuildingCoordinates = building.rigidBody.move();
+            var lastBuildingCoordinates = building.rigidBody.move();
 
-                building.sprite
-                    .render(building.rigidBody.coords, lastBuildingCoordinates)
-                    .update();
+            building.sprite
+                .render(building.rigidBody.coords, lastBuildingCoordinates)
+                .update();
             }
             //spawn Buildings
             if (buildingTime === 0) {
@@ -304,15 +305,17 @@ window.addEventListener('load', function() {
             // render and update enemies
 
             addEnemy();
-            for (let i = 0; i < enemiesPool.length; i++) {
+            for(let i = 0; i < enemiesPool.length; i++) {
                 let currentEnemy = enemiesPool[i];
                 currentEnemy.move();
-                if (currentEnemy.rigidBody.coords.x < -currentEnemy.rigidBody.width) {
+ 
+                if(currentEnemy.rigidBody.coords.x < -currentEnemy.rigidBody.width) {
                     enemiesPool.shift();
                     i--;
                     continue;
                 }
                 //collision
+
                 if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody)) {
                     // save in locale storage
                     // clean timer
@@ -324,11 +327,21 @@ window.addEventListener('load', function() {
                     menu.gameOver();
                     return;
                 }
-                /*else {
-                                   console.log(enemiesPool.length);
-                                   console.log(currentEnemy.rigidBody.coords.x);
-                                   console.log(currentEnemy.rigidBody.width);
-                               }*/
+
+                if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody) || 
+                (currentEnemy.bullet && heroBody.collidesWith(currentEnemy.bullet))) {
+
+                // return to menu
+                $('#game-play').addClass('hidden');
+                $('#menu-content').removeClass('hidden');
+
+
+                return;
+                console.log(true);               
+
+                } else {
+                    console.log(startInterval);
+                 }
             }
         }
         // check for collision and change states
