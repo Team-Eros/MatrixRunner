@@ -54,14 +54,14 @@ class GameState {
         this.context.drawImage(
             this.image,
             0,
-            this.image.height - Math.abs(this.coordinates.y)
+            Math.abs(this.coordinates.y) - this.image.height
         );
 
         return this;
     };
 
     update() {
-        this.coordinates.y -= this.speedY; // options.sppedY
+        this.coordinates.y += this.speedY; // options.sppedY
 
         if (Math.abs(this.coordinates.y) > this.image.height) {
             this.coordinates.y = 0;
@@ -142,7 +142,7 @@ class GameState {
                 'Cvetan Karadjov'
             ],
             art: [],
-            produces: ['Zahari Dimitrov']
+            produces: []
         };
 
         var content = document.getElementById('credits');
@@ -168,9 +168,7 @@ class GameState {
 
         // score board state
         // go to menu state
-        $.getJSON("../scores.json", function() {
-            console.log("success");
-        })
+
     }
     pause() {
         // pause state
