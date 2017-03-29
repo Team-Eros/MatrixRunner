@@ -15,9 +15,11 @@ var globalSpeedX = WALKING_SPEED;
 
 window.addEventListener('load', function() {
 
+
     var width = window.innerWidth,
         height = window.innerHeight,
-        gameTimer = 0;
+        gameTimer = 0,
+        lastTimer = '';
 
     // templates
     var templateMenu = document.getElementById('menu-template').innerHTML,
@@ -71,6 +73,7 @@ window.addEventListener('load', function() {
     gameContainer.appendChild(playerCanvas);
     gameContainer.appendChild(buildingsCanvas);
     gameContainer.appendChild(enemyCanvas);
+    gameContainer.appendChild(buildingsCanvas);
 
     // create contexts and load images
     var gameCtx = gameCanvas.getContext("2d"),
@@ -117,8 +120,10 @@ window.addEventListener('load', function() {
     if (menuContainer.className === '') {
         gameTimer = menu.timer();
         gameTimer.start();
-
     }
+
+    // stop timer if some button is clicked
+    stopTimer(gameTimer);
 
     // add canvas to dom
     menuWrapper.appendChild(menuCanvas);
@@ -146,6 +151,73 @@ window.addEventListener('load', function() {
     // TODO: create enemies Pool
     var enemiesPool = [];
     enemiesPool.push(enemy);
+    var startInterval = 300;
+
+    function addEnemy() {
+        if(enemiesPool.length) {
+            let currentEnemy = enemiesPool[enemiesPool.length - 1];
+            
+            if(currentEnemy.rigidBody.coords.x == startInterval) {
+                let newEnemy = new Enemy(enemyCtx);            
+                enemiesPool.push(newEnemy);
+                if(startInterval < 700) {
+                    startInterval += 25;
+                }
+            }
+        } else {
+            enemiesPool.push(new Enemy(enemyCtx));
+        }
+    };
+
+    // call storage on enter Name field
+    storage(saveScore);
+    // storage
+    function saveScore() {
+
+        var input = document.querySelector("#playerName input");
+        var name = input.value;
+
+        var scoresHolder = document.getElementById("score");
+
+        var playerScores = getObjectFromLocalStorage();
+        if (!playerScores) {
+            playerScores = [];
+        }
+
+        playerScores.push({ "name": name, "playerScore": scoresHolder.innerHTML, 'time': lastTimer });
+
+        playerScores.sort(function(a, b) {
+            return parseInt(b.playerScore) - parseInt(a.playerScore);
+        });
+
+        //display score in score
+        var bestScore = document.getElementById("best-scores");
+        var lastTime = document.getElementById("last-time");
+        var currentScore = document.getElementById('current-score');
+
+        // update 
+        bestScore.innerHTML = playerScores[0].playerScore || 0;
+
+        scoresHolder.innerHTML = "0";
+        // // in SCORE TABLE TODDO:
+        // for (var i = 0; i < playerScores.length; i++) {
+        //     var boldItem = false;
+        //     if (playerScores[i]["name"] == name) {
+        //         boldItem = true;
+        //     }
+        //     var currentScore = document.createElement("li");
+        //     currentScore.innerText = playerScores[i]["name"] + ":" + playerScores[i]["playerScore"];
+
+
+        //     scoresHolder.appendChild(currentScore);
+        // }
+
+        // scoreBoard.style.display = "block";
+        console.log(playerScores);
+
+        setObjectToLocalStorage(playerScores);
+
+    }
 
     function gameLoop() {
         // render and update menu 
@@ -157,7 +229,8 @@ window.addEventListener('load', function() {
         // render and update player
         // check if gamecontainer is visible    
         if (gameContainer.className === '') {
-
+            
+            // render and update buildings
             for (let i = 0; i < buildings.length; i += 1) {
                 let building = buildings[i];
                 building.move();
@@ -167,15 +240,8 @@ window.addEventListener('load', function() {
                     continue;
                 }
             }
-
-            // for (let j = 0; j < buildings.length; j += 1) {
-            //     if (heroBody.isOnTopOf(buildings[j].rigidBody)) {
-            //         heroFloor = buildings[j].rigidBody.coords.y - heroBody.height;
-            //     } else {
-            //         heroFloor = FIELD_HEIGHT - heroBody.height;
-            //     }
-            // }
-
+            
+            // render and update player
             var lastHeroCoords = heroBody
                 .applyGravity(GLOBAL_GRAVITY, heroFloor) // pulls down
                 .decelerate(GLOBAL_FRICTION) // stops object horizontally
@@ -197,50 +263,98 @@ window.addEventListener('load', function() {
             background.pan();
             frontBackground.pan();
 
-            // TODO: spawn enemies
-            // render and update enemies
-            let enemiesInterval = 5,
-                newSpeed = 0.5;
+  /*        // CONFLICTED
+            // spawn buildings
+            // render and update buildings
 
-            enemiesPool[0].move();
-            if (enemiesPool[0].coords.x <= -100) {
-                enemiesPool.shift();
-            } else if (gameTimer._seconds == enemiesInterval) {
-                let newEnemy = new Enemy(enemyCtx);
-                enemiesPool.push(new Enemy(enemyCtx));
-                enemiesPool[enemiesPool.length - 1].speed += newSpeed;
-                enemiesPool[enemiesPool.length - 1].move();
-                enemiesInterval += enemiesInterval;
-                //console.log("interval", enemiesInterval);
-                newSpeed += 0.5;
+            for (let i = 0; i < buildingArray.length; i += 1) {
+
+            let building = buildingArray[i];
+
+            var lastBuildingCoordinates = building.rigidBody.move();
+
+            building.sprite
+                .render(building.rigidBody.coords, lastBuildingCoordinates)
+                .update();
+            }
+            //spawn Buildings
+            if (buildingTime === 0) {
+
+                if (buildingTwoImages = 2) {
+                    buildingArray.push(building1)
+                    buildingTwoImages - +1;
+                }
+                buildingArray.push(new Buildings(sheetNumber, buildingsContex, { x: FIELD_WIDTH, y: FIELD_HEIGHT - buildSprite.height / buildingHeight }))
+
+                // Making random buildings height
+                if (Math.random() <= 0.5) {
+                    buildingHeight += 0.5
+                } else {
+                    buildingHeight -= 0.5
+                }
+
+                if (buildingHeight > 3.5) {
+                    buildingHeight = 1.5
+                }
+
+                if (buildingHeight < 1.4) {
+                    buildingHeight = 1.5
+                }
+
+                //switch building sheets
+                sheetNumber += 1;
+                if (sheetNumber > 3) {
+                    sheetNumber = 0;
+                }
+            }
+
+            // buildingTime = space between buildings
+            buildingTime += 1;
+            if (buildingTime === 150) {
+                buildingTime = 0;
+            }
+*/
+
+            // spawn enemies
+            // render and update enemies
+
+            addEnemy();
+            for(let i = 0; i < enemiesPool.length; i++) {
+                let currentEnemy = enemiesPool[i];
+                currentEnemy.move();
+ 
+                if(currentEnemy.rigidBody.coords.x < -currentEnemy.rigidBody.width) {
+                    enemiesPool.shift();
+                    i--;
+                    continue;
+                }
+                //collision
+
+                if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody) || 
+                (currentEnemy.bullet && heroBody.collidesWith(currentEnemy.bullet))) {
+
+                    // save in locale storage
+                    // clean timer
+                    lastTimer = gameTimer.minutes + ':' + gameTimer.seconds;
+
+                    gameTimer.pause();
+                    gameTimer.totalSeconds = 0;
+                    // return to menu
+                    menu.gameOver();
+                    return;          
+
+                } else {
+                    console.log(startInterval);
+                 }
             }
         }
-
-        if (heroBody.collidesWith(enemyBody)) {
-            //hero.sprite = null;
-            // return to menu
-            $('#game-play').addClass('hidden');
-            $('#menu').removeClass('hidden');
-
-            //console.log(true);
-            return;
-        } else {
-            //console.log(false);
-            //console.log(enemiesPool[enemiesPool.length - 1].coords.x);
-            //console.log("length ", enemiesPool.length);
-            //console.log("speed", enemiesPool[enemiesPool.length - 1].speed );
-            //console.log(gameTimer);
-            //console.log(enemiesPool[enemiesPool.length - 1]);
-            //console.log("hero y", heroBody.coords.y);
-            //console.log("enemy y ", enemy.coords.y - enemyBody.height/2);
-            //console.log("hero x - width", heroBody.coords.x - heroBody.width)
-            //console.log("enemy coords x", enemy.coords.x)
-        }
-
+        
+        // spawn buildings
         buildingRenderer.spawnBuildings(buildings, buildingsCtx);
-
+      
         window.requestAnimationFrame(gameLoop);
     }
 
     gameLoop();
+
 });

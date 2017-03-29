@@ -54,14 +54,14 @@ class GameState {
         this.context.drawImage(
             this.image,
             0,
-            this.image.height - Math.abs(this.coordinates.y)
+            Math.abs(this.coordinates.y) - this.image.height
         );
 
         return this;
     };
 
     update() {
-        this.coordinates.y -= this.speedY; // options.sppedY
+        this.coordinates.y += this.speedY; // options.sppedY
 
         if (Math.abs(this.coordinates.y) > this.image.height) {
             this.coordinates.y = 0;
@@ -142,7 +142,7 @@ class GameState {
                 'Cvetan Karadjov'
             ],
             art: [],
-            produces: ['Zahari Dimitrov']
+            produces: []
         };
 
         var content = document.getElementById('credits');
@@ -154,7 +154,7 @@ class GameState {
         content.innerHTML = hbTemplate(data);
 
         // keyboards and mouse control
-        controlCredits();
+        controlCredits('#credits');
     }
 
     // timer on game 
@@ -165,12 +165,45 @@ class GameState {
     }
 
     score() {
+        var data = getObjectFromLocalStorage();
 
         // score board state
         // go to menu state
-        $.getJSON("../scores.json", function() {
-            console.log("success");
-        })
+        var $content = $('#scoreboard'),
+            $template = $('#scores-template').html();
+        // compile template 
+        var hbTemplate = Handlebars.compile($template);
+
+        $content.html(hbTemplate(data));
+
+
+        controlCredits('#scoreboard');
+
+
+    }
+
+    gameOver() {
+        var $content = $('#game-over'),
+            $template = $('#game-over-template').html();
+        $content.html($template);
+
+        // Show results
+        $("#best-scores").html();
+
+        var $lastTimer = $('#timer').html();
+        $("#last-time").html($lastTimer);
+
+        var $currentScore = $('#score').html();
+        $('#current-score').html($currentScore);
+
+        // hide gameover template
+        $('#game-play').addClass('hidden');
+        $('#menu').addClass('hidden');
+        $('#menuContent').removeClass('hidden');
+        $content.removeClass('hidden');
+
+        // control enter input
+        gameOverControl();
     }
     pause() {
         // pause state

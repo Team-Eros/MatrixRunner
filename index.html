@@ -14,6 +14,7 @@
     <!--user interface window states-->
     <div id="menuContent">
         <div id="menu"></div>
+        <div id="game-over" class="hidden"></div>
         <div id="credits" class="hidden"></div>
         <div id="scoreboard" class="hidden"></div>
     </div>
@@ -120,7 +121,13 @@
         </div>
     </script>
 
+
+    <!--SCORE TEMPLATE-->
     <script id="scores-template" type="text/x-handlebars-template">
+
+        <div class="back-menu btn-game">
+            <img src="./assets/images/go_menu.png" alt="">
+        </div>
         <div class="title-menu">
             <img src="./assets/images/score.png" alt="" class="title-img">
         </div>
@@ -152,10 +159,33 @@
             <div class="point-list col">
                 <ul>
                     {{#each this}}
-                    <li>{{point}}</li>
+                    <li>{{playerScore}}</li>
                     {{/each}}
                 </ul>
             </div>
+        </div>
+    </script>
+
+    <script id="game-over-template" type="text/x-handlebars-template">
+        <div class="title-menu">
+            <img src="./assets/images/game_over.png" alt="" class="title-img">
+            <div class='try-again'>Try Again</div>
+            <div class='scores-result'>Scores</div>
+        </div>
+
+        <div class="content-menu">
+            <ul>
+                <li>
+                    <label id="playerName">
+                        Enter Name:
+                        <input type="text" autofocus/>
+                    </label>
+                    <span id="getPlayerName" class="hidden"></span>
+                </li>
+                <li>Score: <span id='current-score'> </span></li>
+                <li>Time: <span id="last-time"></span></li>
+                <li>Best: <span id='best-scores'></span></li>
+            </ul>
         </div>
     </script>
 
@@ -175,6 +205,7 @@
     <script src="./js/player.js"></script>
     <script src="./js/enemy.js"></script>
     <script src="./js/building.js"></script>
+    <script src="./js/localeStorage.js"></script>
     <script src="./js/background.js"></script>
     <script src="./js/renderer.js"></script>
 </body>

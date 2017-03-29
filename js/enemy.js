@@ -1,3 +1,6 @@
+
+'use strict';
+
 const ENEMY_IMG_ID = "smith-sprite",
     ENEMY_ALL_FRAMES = 8,
     AIM_INDEX_ENEMY = 0,
@@ -21,6 +24,8 @@ class Bullet {
         this.context = context;
         this.coords = coords || { x: 100, y: 100 };
         this.speed = speed || { x: 0, y: 0 };
+        this.width = bulletSheet.width || 0;
+        this.height = bulletSheet.height || 0;
         this.image = image || bulletSheet;
         this.sprite = this.createBullet();
     }
@@ -137,10 +142,27 @@ class Enemy {
             this.bullet.speed.x = 0;
         }
 
-        if (this.rigidBody.coords.x < -this.rigidBody.width) {
-            this.rigidBody.coords.x = DEFAUT_START_COORDS.x;
-            this.bulletShot = false;
-        }
+        /*
+        let oldFirstPosition = { x: this.coords.x, y: this.coords.y };
+        //oldSecondPosition = { x: oldFirstPosition.x + enemySheet.width, y: oldFirstPosition.y + enemySheet.y };
+
+        // move enemy
+        this.coords.x -= this.speed;
+
+        // save new position
+        let newFirstPosition = { x: this.coords.x, y: this.coords.y };
+
+        // render (with sprite.render method)
+        this.sprite.render(newFirstPosition, oldFirstPosition).update();
+
+        // reset position (first goes after second)
+        */
+        /*
+          if (this.rigidBody.coords.x < -this.rigidBody.width) {
+              this.rigidBody.coords.x = DEFAUT_START_COORDS.x;
+              this.bulletShot = false;
+          }
+          */
 
         return this;
     }
