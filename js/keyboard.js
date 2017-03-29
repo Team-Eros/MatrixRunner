@@ -220,7 +220,8 @@ function controlPlayer(body, floor) {
                 //     return;
                 // }
                 //body.speed.x = -body.impulse.x;
-                globalSpeedX = -WALKING_SPEED;
+                gloabalBulletSpeed = SLOW_BULLET_SPEED;
+                globalSpeedX = SLOW_TIME_SPEED;
                 break;
             case 38:
                 jump();
@@ -251,6 +252,10 @@ function controlPlayer(body, floor) {
 
     window.addEventListener('keyup', function(ev) {
         if (ev.which === 39) {
+            globalSpeedX = WALKING_SPEED;
+        }
+        if (ev.which === 37) {
+            gloabalBulletSpeed = NORMAL_BULLET_SPEED;
             globalSpeedX = WALKING_SPEED;
         }
         //if (ev.which !== 38 && body.y >= floor - 26) {
