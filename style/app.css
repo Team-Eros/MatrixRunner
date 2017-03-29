@@ -55,6 +55,10 @@
             #frontbg-canvas {
                 z-index: -9;
             }
+
+            #buildings-canvas {
+                z-index: -8;
+            }
             
             .btn-game {
                 position: absolute;

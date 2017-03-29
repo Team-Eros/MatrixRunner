@@ -1,13 +1,5 @@
-// extends entity
-'use strict';
-// create background sprites
-// create background renderer
-// update backgroundtates
 
-// optional
-// create bullets (extend entity)
-// bullet sprite
-// bullet rigidbody
+'use strict';
 
 const ENEMY_IMG_ID = "smith-sprite",
     ENEMY_ALL_FRAMES = 8,
@@ -19,7 +11,8 @@ const ENEMY_IMG_ID = "smith-sprite",
     DEFAULT_IMPULSE_ENEMY_X = 0,
     DEFAULT_IMPULSE_ENEMY_Y = 0,
     DEFAUT_START_COORDS = { x: FIELD_WIDTH + 50, y: FIELD_HEIGHT - 64 },
-    BULLET_SIZE = 30;
+    BULLET_SIZE = 30,
+    BULLET_SPEED = 10;
 
 
 
@@ -67,7 +60,7 @@ class Enemy {
     constructor(enemyCtx, coords, speed, impulse) {
         this.enemyCtx = enemyCtx;
         this.coords = coords || DEFAUT_START_COORDS;
-        this.speed = speed || { x: -1, y: 0 };
+        this.speed = speed || { x: globalSpeedX, y: 0 };
         this.rigidBody = this.createRigidBody(impulse);
         this.sprite = this.createSprite();
         this.bullet = new Bullet(this.enemyCtx, { x: 2000, y: 0 });
@@ -113,6 +106,7 @@ class Enemy {
     }
 
     move() {
+        this.rigidBody.speed.x = -globalSpeedX;
         var lastCoords = this.rigidBody
             .applyGravity(GLOBAL_GRAVITY)
             .move();
@@ -138,7 +132,7 @@ class Enemy {
             this.bulletShot = true;
             var gunCoords = { x: this.rigidBody.coords.x + 12, y: this.rigidBody.coords.y + 5 };
             this.bullet.coords = { x: gunCoords.x, y: gunCoords.y };
-            this.bullet.speed.x = -20;
+            this.bullet.speed.x = -BULLET_SPEED;
         }
 
         this.bullet.fly();
@@ -162,13 +156,14 @@ class Enemy {
         this.sprite.render(newFirstPosition, oldFirstPosition).update();
 
         // reset position (first goes after second)
-*/
+        */
         /*
           if (this.rigidBody.coords.x < -this.rigidBody.width) {
               this.rigidBody.coords.x = DEFAUT_START_COORDS.x;
               this.bulletShot = false;
           }
           */
+
         return this;
     }
 }

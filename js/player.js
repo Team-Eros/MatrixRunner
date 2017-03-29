@@ -7,6 +7,7 @@ const HERO_ALL_FRAMES = 31,
     RUN_FRAMES = 14,
     WALK_INDEX = 16,
     WALK_FRAMES = 15,
+    STAY_INDEX = 19,
     CYCLES_PER_FRAME_RUN = 3,
     CYCLES_PER_FRAME_WALK = 6;
 const DEFAULT_IMPULSE_X = 7,
@@ -17,7 +18,7 @@ var heroSheet = document.getElementById("hero-sprite");
 class Player {
     constructor(playerCtx, coords, speed, impulse) {
         this.playerCtx = playerCtx;
-        this.coords = coords || { x: 0, y: 0 };
+        this.coords = coords || { x: 150, y: FIELD_HEIGHT - 150 };
         this.speed = speed || { x: 0, y: 0 };
         this.rigidBody = this.createRigidBody(impulse);
         this.sprite = this.createSprite();
@@ -28,8 +29,8 @@ class Player {
         return new RigidBody(
             this.coords,
             this.speed,
-            heroSheet.height,
             heroSheet.width / HERO_ALL_FRAMES,
+            heroSheet.height,
             impulse);
     }
 
@@ -64,6 +65,10 @@ class Player {
                 this.sprite.frameIndex = FALL_INDEX;
                 this.sprite.framesCount = FALL_FRAMES;
                 break;
+            case "stay":
+                this.sprite.frameIndex = STAY_INDEX;
+                this.sprite.framesCount = 1;
+                break;
                 // case for shoot
                 // case for escape bullets
         }
@@ -73,12 +78,16 @@ class Player {
     switchHeroSprites() {
         let heroBody = this.rigidBody,
             heroSprite = this.Sprite;
-        if (heroBody.speed.x > 0 && heroBody.speed.y === 0) {
+        if ((heroBody.speed.x > 0 && heroBody.speed.y === 0) || globalSpeedX > 5) {
             heroSprite = this.changeSprite("run");
-        } else if (heroBody.speed.x < 0.5 && heroBody.speed.y === 0) {
+        } else if ((heroBody.speed.x < 0.5 && heroBody.speed.y === 0) || globalSpeedX < 5) {
             heroSprite = this.changeSprite("walk");
-        } else if (heroBody.speed.y !== 0) {
+        }
+        if (heroBody.speed.y !== 0) {
             heroSprite = this.changeSprite("jump");
+        }
+        if (globalSpeedX === 0) {
+            heroSprite = this.changeSprite("stay");
         }
         return this;
     }
