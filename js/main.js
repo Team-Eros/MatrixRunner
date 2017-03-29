@@ -6,10 +6,12 @@ const FIELD_WIDTH = 1024,
     GLOBAL_FRICTION = 0.3,
     GLOBAL_GRAVITY = 0.4,
     COORDS = { x: 0, y: 0 },
-    REAR_BG_SPEED = 1,
     REAR_BG_POSITION_Y = 35,
-    FRONT_BG_SPEED = 2,
-    FRONT_BG_POSITION_Y = 80;
+    FRONT_BG_POSITION_Y = 80,
+    WALKING_SPEED = 3,
+    RUNNING_SPEED = 6;
+
+var globalSpeedX = WALKING_SPEED;
 
 window.addEventListener('load', function() {
 
@@ -35,8 +37,8 @@ window.addEventListener('load', function() {
         frontBgCanvas = document.createElement("canvas"),
         playerCanvas = document.createElement("canvas"),
         enemyCanvas = document.createElement("canvas"),
-        menuCanvas = document.createElement('canvas'),
-        buildingsCanvas = document.createElement('canvas');
+        buildingsCanvas = document.createElement('canvas'),
+        menuCanvas = document.createElement('canvas');
 
     // setup canvas nodes
     gameCanvas.id = "game-canvas";
@@ -55,18 +57,19 @@ window.addEventListener('load', function() {
     enemyCanvas.width = FIELD_WIDTH;
     enemyCanvas.height = FIELD_HEIGHT;
 
-    menuCanvas.id = "menu-background";
-    menuCanvas.width = width;
-    menuCanvas.height = height;
-
     buildingsCanvas.id = "buildings-canvas";
     buildingsCanvas.width = FIELD_WIDTH;
     buildingsCanvas.height = FIELD_HEIGHT;
+
+    menuCanvas.id = "menu-background";
+    menuCanvas.width = width;
+    menuCanvas.height = height;
 
     // add canvas to dom
     gameContainer.appendChild(gameCanvas);
     gameContainer.appendChild(frontBgCanvas);
     gameContainer.appendChild(playerCanvas);
+    gameContainer.appendChild(buildingsCanvas);
     gameContainer.appendChild(enemyCanvas);
 
     // create contexts and load images
@@ -74,15 +77,14 @@ window.addEventListener('load', function() {
         frontBgCtx = frontBgCanvas.getContext("2d"),
         playerCtx = playerCanvas.getContext("2d"),
         enemyCtx = enemyCanvas.getContext("2d"),
-        menuCtx = menuCanvas.getContext('2d'),
-        buildingsContex = buildingsCanvas.getContext('2d');
+        buildingsCtx = buildingsCanvas.getContext("2d"),
+        menuCtx = menuCanvas.getContext('2d');
 
     // fill background
     menuCtx.beginPath();
     menuCtx.rect(0, 0, width, height);
     menuCtx.fillStyle = "black";
     menuCtx.fill();
-
 
     // TODO: create and update local storage
     // TODO: create game states
@@ -94,14 +96,15 @@ window.addEventListener('load', function() {
     var background = new Background(
         gameCtx,
         rearBgPosition,
-        REAR_BG_SPEED,
+        (globalSpeedX - 2),
         rearBgImg);
+
     var frontBgImg = document.getElementById("front-background");
     var frontBgPosition = { x: 0, y: FRONT_BG_POSITION_Y };
     var frontBackground = new Background(
         frontBgCtx,
         frontBgPosition,
-        FRONT_BG_SPEED,
+        (globalSpeedX - 1),
         frontBgImg);
 
     // create menu background
@@ -125,16 +128,14 @@ window.addEventListener('load', function() {
     var hero = new Player(playerCtx),
         heroBody = hero.rigidBody,
         heroSprite = hero.sprite;
-    control(heroBody);
+    let heroFloor = FIELD_HEIGHT - heroBody.height;
+    controlPlayer(heroBody, heroFloor);
+
     gameMenu(gameTimer);
 
     // TODO: create buildings spawner
-    var buildingArray = [],
-        buildingTime = 0,
-        sheetNumber = 0,
-        buildingHeight = 2,
-        building1 = new Buildings(3, buildingsContex, { x: FIELD_WIDTH / 4, y: FIELD_HEIGHT - buildSprite.height / 2 }),
-        buildingTwoImages = 1;
+    var buildings = [];
+    var buildingRenderer = new BuildingRenderer();
 
     // TODO: create enemy spawner
 
@@ -145,13 +146,6 @@ window.addEventListener('load', function() {
     // TODO: create enemies Pool
     var enemiesPool = [];
     enemiesPool.push(enemy);
-
-    /* // collision function - enemy and hero (use rigidBody.collideWith(otherRigidBody))
-     function collides(firstObjectCoords, firstObjectSize, secondObjectCoords, secondObjectSize) {
-         return (firstObjectCoords.x > secondObjectCoords.x - secondObjectSize.width + 80 &&
-             firstObjectCoords.x - firstObjectSize.width / 2 < secondObjectCoords.x &&
-             firstObjectCoords.y > secondObjectCoords.y - secondObjectSize.height / 2)
-     }*/
 
     function gameLoop() {
         // render and update menu 
@@ -164,8 +158,26 @@ window.addEventListener('load', function() {
         // check if gamecontainer is visible    
         if (gameContainer.className === '') {
 
+            for (let i = 0; i < buildings.length; i += 1) {
+                let building = buildings[i];
+                building.move();
+                if (building.rigidBody.coords.x < -building.rigidBody.width) {
+                    buildings.splice(i, 1);
+                    i -= 1;
+                    continue;
+                }
+            }
+
+            // for (let j = 0; j < buildings.length; j += 1) {
+            //     if (heroBody.isOnTopOf(buildings[j].rigidBody)) {
+            //         heroFloor = buildings[j].rigidBody.coords.y - heroBody.height;
+            //     } else {
+            //         heroFloor = FIELD_HEIGHT - heroBody.height;
+            //     }
+            // }
+
             var lastHeroCoords = heroBody
-                .applyGravity(GLOBAL_GRAVITY) // pulls object down
+                .applyGravity(GLOBAL_GRAVITY, heroFloor) // pulls down
                 .decelerate(GLOBAL_FRICTION) // stops object horizontally
                 .move();
             hero.switchHeroSprites();
@@ -174,9 +186,15 @@ window.addEventListener('load', function() {
                 .update();
 
             // render and update background based on hero speed
-            background.speed = REAR_BG_SPEED + heroBody.speed.x;
+            if (globalSpeedX >= 0) {
+                background.speed = globalSpeedX > 0 ? ((globalSpeedX - 2) + heroBody.speed.x) : 0;
+                frontBackground.speed = globalSpeedX > 0 ? ((globalSpeedX - 1) + heroBody.speed.x) : 0;
+            } else {
+                background.speed = globalSpeedX < 0 ? ((globalSpeedX + 2) - heroBody.speed.x) : 0;
+                frontBackground.speed = globalSpeedX < 0 ? ((globalSpeedX + 1) - heroBody.speed.x) : 0;
+            }
+
             background.pan();
-            frontBackground.speed = FRONT_BG_SPEED + heroBody.speed.x;
             frontBackground.pan();
 
             // TODO: spawn enemies
@@ -191,85 +209,23 @@ window.addEventListener('load', function() {
                 let newEnemy = new Enemy(enemyCtx);
                 enemiesPool.push(new Enemy(enemyCtx));
                 enemiesPool[enemiesPool.length - 1].speed += newSpeed;
-                //enemiesPool[enemiesPool.length - 1].move();
+                enemiesPool[enemiesPool.length - 1].move();
                 enemiesInterval += enemiesInterval;
-                console.log("interval", enemiesInterval);
+                //console.log("interval", enemiesInterval);
                 newSpeed += 0.5;
             }
         }
 
-
-        // TODO: spawn buildings
-        //     render and update buildings
-
-        for (let i = 0; i < buildingArray.length; i += 1) {
-
-            let building = buildingArray[i];
-
-            var lastBuildingCoordinates = building.rigidBody.move();
-
-            building.sprite
-                .render(building.rigidBody.coords, lastBuildingCoordinates)
-                .update();
-        }
-        //spawn Buildings
-        if (buildingTime === 0) {
-
-            if (buildingTwoImages = 2) {
-                buildingArray.push(building1)
-                buildingTwoImages - +1;
-            }
-
-
-            buildingArray.push(new Buildings(sheetNumber, buildingsContex, { x: FIELD_WIDTH, y: FIELD_HEIGHT - buildSprite.height / buildingHeight }))
-
-            // Making random buildings height
-            if (Math.random() <= 0.5) {
-                buildingHeight += 0.5
-            } else {
-                buildingHeight -= 0.5
-            }
-
-            if (buildingHeight > 3.5) {
-                buildingHeight = 1.5
-            }
-
-            if (buildingHeight < 1.4) {
-                buildingHeight = 1.5
-            }
-
-            //switch building sheets
-            sheetNumber += 1;
-            if (sheetNumber > 3) {
-                sheetNumber = 0;
-            }
-        }
-
-        // buildingTime = space between buildings
-        buildingTime += 1;
-        if (buildingTime === 150) {
-            buildingTime = 0;
-        }
-
-
-        // check for collision and change states
-        // check for collision - enemy and hero
-
-        /*if (heroBody.coords, { width: heroBody.width, height: heroBody.height }, enemy.coords, { width: enemyBody.width, height: enemyBody.height }))*/
         if (heroBody.collidesWith(enemyBody)) {
-
             //hero.sprite = null;
-
             // return to menu
             $('#game-play').addClass('hidden');
             $('#menu').removeClass('hidden');
 
-            console.log(true);
-
+            //console.log(true);
             return;
         } else {
-            console.log(false);
-
+            //console.log(false);
             //console.log(enemiesPool[enemiesPool.length - 1].coords.x);
             //console.log("length ", enemiesPool.length);
             //console.log("speed", enemiesPool[enemiesPool.length - 1].speed );
@@ -280,6 +236,8 @@ window.addEventListener('load', function() {
             //console.log("hero x - width", heroBody.coords.x - heroBody.width)
             //console.log("enemy coords x", enemy.coords.x)
         }
+
+        buildingRenderer.spawnBuildings(buildings, buildingsCtx);
 
         window.requestAnimationFrame(gameLoop);
     }

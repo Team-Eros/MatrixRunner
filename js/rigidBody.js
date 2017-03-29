@@ -38,12 +38,13 @@ class RigidBody {
         return this;
     }
 
-    applyGravity(gravity) {
+    applyGravity(gravity, floor) {
         // needs refactoring
-        let floor = FIELD_HEIGHT - 100;
-        if (this.coords.y === floor) {
-            return this;
-        }
+        floor = floor || FIELD_HEIGHT - this.height;
+        // if (this.coords.y === floor) {
+        //     this.speed.y = 0;
+        //     return this;
+        // }
 
         if (this.coords.y > floor) {
             this.coords.y = floor;
@@ -67,5 +68,9 @@ class RigidBody {
             y2 = otherBody.coords.y + otherBody.height / 2,
             distance = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
         return distance <= thisRadius + otherRadius;
+    }
+
+    isOnTopOf(b) {
+        return b.coords.x <= this.coords.x && this.coords.x <= b.coords.x + b.width;
     }
 }

@@ -163,17 +163,18 @@ function gameMenu(timer) {
 }
 
 
-function control(body) {
+function controlPlayer(body, floor) {
     window.addEventListener('keydown', function(ev) {
         console.log(ev.which);
         switch (ev.which) {
             case 37:
-                if (body.coords.x <= 0) {
-                    body.coords.x = 0;
-                    body.speed.x = 0;
-                    return;
-                }
-                body.speed.x = -body.impulse.x;
+                // if (body.coords.x <= 0) {
+                //     body.coords.x = 0;
+                //     body.speed.x = 0;
+                //     return;
+                // }
+                //body.speed.x = -body.impulse.x;
+                globalSpeedX = -WALKING_SPEED;
                 break;
             case 38:
                 jump();
@@ -182,10 +183,11 @@ function control(body) {
                 jump();
                 break;
             case 39:
-                body.speed.x = body.impulse.x;
+                //body.speed.x = body.impulse.x;
+                globalSpeedX = RUNNING_SPEED;
                 break;
             case 40:
-                body.speed.y = body.impulse.y;
+                globalSpeedX = 0;
                 break;
             default:
                 body.speed.x = 0;
@@ -195,16 +197,18 @@ function control(body) {
     });
 
     function jump() {
-        let floor = FIELD_HEIGHT - body.height;
         if (body.coords.y < floor - 2 * body.height || body.speed.y > 0) {
             return;
         }
         body.speed.y = -body.impulse.y;
     }
 
-    // window.addEventListener('keyup', function(ev) {
-    //     if (ev.which !== 38 && body.y >= floor - 26) {
-    //         friction = GLOBAL_FRICTION;
-    //     }
-    // });
+    window.addEventListener('keyup', function(ev) {
+        if (ev.which === 39) {
+            globalSpeedX = WALKING_SPEED;
+        }
+        //if (ev.which !== 38 && body.y >= floor - 26) {
+        //    friction = GLOBAL_FRICTION;
+        //}
+    });
 }
