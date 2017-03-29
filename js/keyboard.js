@@ -2,7 +2,6 @@
 'use strict';
 
 // control menu
-
 function controlMenu() {
     var active = $('.btn-active') ||
         $('.dropdownItemContainer li');
@@ -21,10 +20,16 @@ function controlMenu() {
             $('.level-btn').removeClass('hidden');
         }
 
+        if ($active.is('#scoreBtn')) {
+            $('#menu').addClass('hidden');
+            $('#scoreboard').removeClass('hidden');
+        }
+
     });
 
     // click load btn 
     $('#loadBtn').on('click', function() {
+        $(this).trigger('startTimer');
         $('#menuContent').addClass('hidden');
         $('#game-play').removeClass('hidden');
 
@@ -105,16 +110,16 @@ function controlMenu() {
 
 // credits 
 
-function controlCredits() {
+function controlCredits(element) {
     $('.back-menu').on('click', function() {
-        $('#credits').addClass('hidden');
+        $(element).addClass('hidden');
         $('#menu').removeClass('hidden');
     })
 
     //exit
     $(document).on('keydown', function(e) {
         if (e.which === 27) {
-            $('#credits').addClass('hidden');
+            $(element).addClass('hidden');
             $('#menu').removeClass('hidden');
         }
     });
@@ -142,6 +147,7 @@ function gameMenu(timer) {
 
     // back menu
     $('.back-menu').on('click', function() {
+        $(this).trigger('stopTimer');
         // hide level menu
         $('.menu-btn').removeClass('hidden');
         $('.level-btn').addClass('hidden');
@@ -159,13 +165,53 @@ function gameMenu(timer) {
             $('#menuContent').removeClass('hidden');
         }
     });
+}
 
+
+function gameOverControl() {
+    $(document).on('keydown', function(e) {
+        if (e.which === 13) {
+
+            $(this).trigger('onEnter');
+            var value = $('#playerName input').val();
+            $('#playerName').addClass('hidden');
+            $('#getPlayerName').html(value).removeClass('hidden');
+
+            // clean 
+            $('#playerName input').val('');
+        }
+    });
+
+    $('.try-again').on('click', function() {
+        window.location.reload();
+    });
+
+    $('.scores-result').on('click', function() {
+        $('#game-over').addClass('hidden');
+        $('#scoreboard').removeClass('hidden');
+    })
+}
+
+// check if back in menu
+function stopTimer(callback) {
+    $(document).on('stopTimer', function() {
+        callback.pause();
+    });
+
+    $(document).on('stopTimer', function() {
+        callback.resume();
+    });
+}
+
+function storage(callback) {
+    $(document).on('onEnter', function() {
+        callback();
+    });
 }
 
 
 function control(body) {
     window.addEventListener('keydown', function(ev) {
-        console.log(ev.which);
         switch (ev.which) {
             case 37:
                 if (body.coords.x <= 0) {

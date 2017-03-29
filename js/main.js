@@ -13,9 +13,11 @@ const FIELD_WIDTH = 1024,
 
 window.addEventListener('load', function() {
 
+
     var width = window.innerWidth,
         height = window.innerHeight,
-        gameTimer = 0;
+        gameTimer = 0,
+        lastTimer = '';
 
     // templates
     var templateMenu = document.getElementById('menu-template').innerHTML,
@@ -115,8 +117,10 @@ window.addEventListener('load', function() {
     if (menuContainer.className === '') {
         gameTimer = menu.timer();
         gameTimer.start();
-
     }
+
+    // stop timer if some button is clicked
+    stopTimer(gameTimer);
 
     // add canvas to dom
     menuWrapper.appendChild(menuCanvas);
@@ -148,17 +152,68 @@ window.addEventListener('load', function() {
     enemiesPool.push(enemy);
 
     function addEnemy() {
-        if(enemiesPool.length) {
+        if (enemiesPool.length) {
             let currentEnemy = enemiesPool[enemiesPool.length - 1];
-            if(currentEnemy.rigidBody.coords.x == 600) {
-            let newEnemy = new Enemy(enemyCtx);
+            if (currentEnemy.rigidBody.coords.x == 600) {
+                let newEnemy = new Enemy(enemyCtx);
 
-            enemiesPool.push(newEnemy);
+                enemiesPool.push(newEnemy);
             }
 
         } else {
             enemiesPool.push(new Enemy(enemyCtx));
         }
+    };
+
+    // call storage on enter Name field
+    storage(saveScore);
+    // storage
+    function saveScore() {
+        debugger;
+
+        var input = document.querySelector("#playerName input");
+        var name = input.value;
+
+        var scoresHolder = document.getElementById("score");
+
+        var playerScores = getObjectFromLocalStorage();
+        if (!playerScores) {
+            playerScores = [];
+        }
+
+        playerScores.push({ "name": name, "playerScore": scoresHolder.innerHTML, 'time': lastTimer });
+
+        playerScores.sort(function(a, b) {
+            return parseInt(b.playerScore) - parseInt(a.playerScore);
+        });
+
+        //display score in score
+        var bestScore = document.getElementById("best-scores");
+        var lastTime = document.getElementById("last-time");
+        var currentScore = document.getElementById('current-score');
+
+        // update 
+        bestScore.innerHTML = playerScores[0].playerScore || 0;
+
+        scoresHolder.innerHTML = "0";
+        // // in SCORE TABLE TODDO:
+        // for (var i = 0; i < playerScores.length; i++) {
+        //     var boldItem = false;
+        //     if (playerScores[i]["name"] == name) {
+        //         boldItem = true;
+        //     }
+        //     var currentScore = document.createElement("li");
+        //     currentScore.innerText = playerScores[i]["name"] + ":" + playerScores[i]["playerScore"];
+
+
+        //     scoresHolder.appendChild(currentScore);
+        // }
+
+        // scoreBoard.style.display = "block";
+        console.log(playerScores);
+
+        setObjectToLocalStorage(playerScores);
+
     }
 
     /* // collision function - enemy and hero (use rigidBody.collideWith(otherRigidBody))
@@ -192,20 +247,20 @@ window.addEventListener('load', function() {
             background.speed = REAR_BG_SPEED + heroBody.speed.x;
             background.pan();
             frontBackground.speed = FRONT_BG_SPEED + heroBody.speed.x;
-            frontBackground.pan();                
+            frontBackground.pan();
 
             // TODO: spawn buildings
             //     render and update buildings
 
             for (let i = 0; i < buildingArray.length; i += 1) {
 
-            let building = buildingArray[i];
+                let building = buildingArray[i];
 
-            var lastBuildingCoordinates = building.rigidBody.move();
+                var lastBuildingCoordinates = building.rigidBody.move();
 
-            building.sprite
-                .render(building.rigidBody.coords, lastBuildingCoordinates)
-                .update();
+                building.sprite
+                    .render(building.rigidBody.coords, lastBuildingCoordinates)
+                    .update();
             }
             //spawn Buildings
             if (buildingTime === 0) {
@@ -238,50 +293,53 @@ window.addEventListener('load', function() {
                 }
             }
 
-        // buildingTime = space between buildings
-        buildingTime += 1;
-        if (buildingTime === 150) {
-            buildingTime = 0;
-        }
-            
+            // buildingTime = space between buildings
+            buildingTime += 1;
+            if (buildingTime === 150) {
+                buildingTime = 0;
+            }
+
 
             // TODO: spawn enemies
             // render and update enemies
 
             addEnemy();
-            for(let i = 0; i < enemiesPool.length; i++) {
+            for (let i = 0; i < enemiesPool.length; i++) {
                 let currentEnemy = enemiesPool[i];
                 currentEnemy.move();
-                if(currentEnemy.rigidBody.coords.x < -currentEnemy.rigidBody.width) {
+                if (currentEnemy.rigidBody.coords.x < -currentEnemy.rigidBody.width) {
                     enemiesPool.shift();
                     i--;
                     continue;
                 }
                 //collision
                 if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody)) {
+                    // save in locale storage
+                    // clean timer
+                    lastTimer = gameTimer.minutes + ':' + gameTimer.seconds;
 
-                // return to menu
-                $('#game-play').addClass('hidden');
-                $('#menu').removeClass('hidden');
-
-                console.log(true);               
-
-                return;
-                } /*else {
-                    console.log(enemiesPool.length);
-                    console.log(currentEnemy.rigidBody.coords.x);
-                    console.log(currentEnemy.rigidBody.width);
-                }*/
+                    gameTimer.pause();
+                    gameTimer.totalSeconds = 0;
+                    // return to menu
+                    menu.gameOver();
+                    return;
+                }
+                /*else {
+                                   console.log(enemiesPool.length);
+                                   console.log(currentEnemy.rigidBody.coords.x);
+                                   console.log(currentEnemy.rigidBody.width);
+                               }*/
             }
         }
         // check for collision and change states
         // check for collision - enemy and hero
 
         /*if (heroBody.coords, { width: heroBody.width, height: heroBody.height }, enemy.coords, { width: enemyBody.width, height: enemyBody.height }))*/
- 
+
 
         window.requestAnimationFrame(gameLoop);
     }
 
     gameLoop();
+
 });
