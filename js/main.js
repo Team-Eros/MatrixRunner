@@ -16,11 +16,12 @@ const FIELD_WIDTH = 1024,
     PIXELS_FOR_METER = 50;
 
 var globalSpeedX = WALKING_SPEED,
+    globalRunSpeed = RUNNING_SPEED,
     gloabalBulletSpeed = NORMAL_BULLET_SPEED,
-    pixelsRun = 0;
+    pixelsRun = 0,
+    multiplier = 1;
 
 window.addEventListener('load', function() {
-
 
     var width = window.innerWidth,
         height = window.innerHeight,
@@ -259,6 +260,10 @@ window.addEventListener('load', function() {
 
             // update meters run
             pixelsRun += globalSpeedX;
+            if (pixelsRun > 1000 * multiplier) {
+                globalRunSpeed += 1;
+                multiplier += 3;
+            }
 
             // render and update background 
             background.speed = globalSpeedX > 0 ? ((globalSpeedX - globalSpeedX * 0.4)) : 0;

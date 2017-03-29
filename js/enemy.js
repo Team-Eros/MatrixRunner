@@ -129,7 +129,7 @@ class Enemy {
             this.rigidBody.coords.x < FIELD_WIDTH - 100 &&
             !this.bulletShot) {
             this.bulletShot = true;
-            var gunCoords = { x: this.rigidBody.coords.x + 12, y: this.rigidBody.coords.y + 5 };
+            var gunCoords = { x: this.rigidBody.coords.x + 12, y: this.rigidBody.coords.y + 7 };
             this.bullet.coords = { x: gunCoords.x, y: gunCoords.y };
             this.bullet.speed.x = -gloabalBulletSpeed;
         }
