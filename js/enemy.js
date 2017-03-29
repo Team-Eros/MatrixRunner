@@ -160,12 +160,12 @@ class Enemy {
         this.sprite.render(newFirstPosition, oldFirstPosition).update();
 
         // reset position (first goes after second)
-*/
+*/      /*
         if (this.rigidBody.coords.x < -this.rigidBody.width) {
             this.rigidBody.coords.x = DEFAUT_START_COORDS.x;
             this.bulletShot = false;
         }
-
+        */
         return this;
     }
 }

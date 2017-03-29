@@ -68,6 +68,7 @@ window.addEventListener('load', function() {
     gameContainer.appendChild(frontBgCanvas);
     gameContainer.appendChild(playerCanvas);
     gameContainer.appendChild(enemyCanvas);
+    gameContainer.appendChild(buildingsCanvas);
 
     // create contexts and load images
     var gameCtx = gameCanvas.getContext("2d"),
@@ -146,6 +147,20 @@ window.addEventListener('load', function() {
     var enemiesPool = [];
     enemiesPool.push(enemy);
 
+    function addEnemy() {
+        if(enemiesPool.length) {
+            let currentEnemy = enemiesPool[enemiesPool.length - 1];
+            if(currentEnemy.rigidBody.coords.x == 600) {
+            let newEnemy = new Enemy(enemyCtx);
+
+            enemiesPool.push(newEnemy);
+            }
+
+        } else {
+            enemiesPool.push(new Enemy(enemyCtx));
+        }
+    }
+
     /* // collision function - enemy and hero (use rigidBody.collideWith(otherRigidBody))
      function collides(firstObjectCoords, firstObjectSize, secondObjectCoords, secondObjectSize) {
          return (firstObjectCoords.x > secondObjectCoords.x - secondObjectSize.width + 80 &&
@@ -177,32 +192,12 @@ window.addEventListener('load', function() {
             background.speed = REAR_BG_SPEED + heroBody.speed.x;
             background.pan();
             frontBackground.speed = FRONT_BG_SPEED + heroBody.speed.x;
-            frontBackground.pan();
+            frontBackground.pan();                
 
-            // TODO: spawn enemies
-            // render and update enemies
-            let enemiesInterval = 5,
-                newSpeed = 0.5;
+            // TODO: spawn buildings
+            //     render and update buildings
 
-            enemiesPool[0].move();
-            if (enemiesPool[0].coords.x <= -100) {
-                enemiesPool.shift();
-            } else if (gameTimer._seconds == enemiesInterval) {
-                let newEnemy = new Enemy(enemyCtx);
-                enemiesPool.push(new Enemy(enemyCtx));
-                enemiesPool[enemiesPool.length - 1].speed += newSpeed;
-                //enemiesPool[enemiesPool.length - 1].move();
-                enemiesInterval += enemiesInterval;
-                console.log("interval", enemiesInterval);
-                newSpeed += 0.5;
-            }
-        }
-
-
-        // TODO: spawn buildings
-        //     render and update buildings
-
-        for (let i = 0; i < buildingArray.length; i += 1) {
+            for (let i = 0; i < buildingArray.length; i += 1) {
 
             let building = buildingArray[i];
 
@@ -211,75 +206,79 @@ window.addEventListener('load', function() {
             building.sprite
                 .render(building.rigidBody.coords, lastBuildingCoordinates)
                 .update();
-        }
-        //spawn Buildings
-        if (buildingTime === 0) {
-
-            if (buildingTwoImages = 2) {
-                buildingArray.push(building1)
-                buildingTwoImages - +1;
             }
+            //spawn Buildings
+            if (buildingTime === 0) {
 
+                if (buildingTwoImages = 2) {
+                    buildingArray.push(building1)
+                    buildingTwoImages - +1;
+                }
+                buildingArray.push(new Buildings(sheetNumber, buildingsContex, { x: FIELD_WIDTH, y: FIELD_HEIGHT - buildSprite.height / buildingHeight }))
 
-            buildingArray.push(new Buildings(sheetNumber, buildingsContex, { x: FIELD_WIDTH, y: FIELD_HEIGHT - buildSprite.height / buildingHeight }))
+                // Making random buildings height
+                if (Math.random() <= 0.5) {
+                    buildingHeight += 0.5
+                } else {
+                    buildingHeight -= 0.5
+                }
 
-            // Making random buildings height
-            if (Math.random() <= 0.5) {
-                buildingHeight += 0.5
-            } else {
-                buildingHeight -= 0.5
+                if (buildingHeight > 3.5) {
+                    buildingHeight = 1.5
+                }
+
+                if (buildingHeight < 1.4) {
+                    buildingHeight = 1.5
+                }
+
+                //switch building sheets
+                sheetNumber += 1;
+                if (sheetNumber > 3) {
+                    sheetNumber = 0;
+                }
             }
-
-            if (buildingHeight > 3.5) {
-                buildingHeight = 1.5
-            }
-
-            if (buildingHeight < 1.4) {
-                buildingHeight = 1.5
-            }
-
-            //switch building sheets
-            sheetNumber += 1;
-            if (sheetNumber > 3) {
-                sheetNumber = 0;
-            }
-        }
 
         // buildingTime = space between buildings
         buildingTime += 1;
         if (buildingTime === 150) {
             buildingTime = 0;
         }
+            
 
+            // TODO: spawn enemies
+            // render and update enemies
 
+            addEnemy();
+            for(let i = 0; i < enemiesPool.length; i++) {
+                let currentEnemy = enemiesPool[i];
+                currentEnemy.move();
+                if(currentEnemy.rigidBody.coords.x < -currentEnemy.rigidBody.width) {
+                    enemiesPool.shift();
+                    i--;
+                    continue;
+                }
+                //collision
+                if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody)) {
+
+                // return to menu
+                $('#game-play').addClass('hidden');
+                $('#menu').removeClass('hidden');
+
+                console.log(true);               
+
+                return;
+                } /*else {
+                    console.log(enemiesPool.length);
+                    console.log(currentEnemy.rigidBody.coords.x);
+                    console.log(currentEnemy.rigidBody.width);
+                }*/
+            }
+        }
         // check for collision and change states
         // check for collision - enemy and hero
 
         /*if (heroBody.coords, { width: heroBody.width, height: heroBody.height }, enemy.coords, { width: enemyBody.width, height: enemyBody.height }))*/
-        if (heroBody.collidesWith(enemyBody)) {
-
-            //hero.sprite = null;
-
-            // return to menu
-            $('#game-play').addClass('hidden');
-            $('#menu').removeClass('hidden');
-
-            console.log(true);
-
-            return;
-        } else {
-            console.log(false);
-
-            //console.log(enemiesPool[enemiesPool.length - 1].coords.x);
-            //console.log("length ", enemiesPool.length);
-            //console.log("speed", enemiesPool[enemiesPool.length - 1].speed );
-            //console.log(gameTimer);
-            //console.log(enemiesPool[enemiesPool.length - 1]);
-            //console.log("hero y", heroBody.coords.y);
-            //console.log("enemy y ", enemy.coords.y - enemyBody.height/2);
-            //console.log("hero x - width", heroBody.coords.x - heroBody.width)
-            //console.log("enemy coords x", enemy.coords.x)
-        }
+ 
 
         window.requestAnimationFrame(gameLoop);
     }
