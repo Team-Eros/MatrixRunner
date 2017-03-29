@@ -253,6 +253,7 @@ function controlPlayer(body, floor) {
 
     window.addEventListener('keyup', function(ev) {
         if (ev.which === 39) {
+            gloabalBulletSpeed = NORMAL_BULLET_SPEED
             globalSpeedX = WALKING_SPEED;
         }
         if (ev.which === 37) {
