@@ -1,4 +1,3 @@
-
 'use strict';
 
 const ENEMY_IMG_ID = "smith-sprite",
@@ -11,8 +10,7 @@ const ENEMY_IMG_ID = "smith-sprite",
     DEFAULT_IMPULSE_ENEMY_X = 0,
     DEFAULT_IMPULSE_ENEMY_Y = 0,
     DEFAUT_START_COORDS = { x: FIELD_WIDTH + 50, y: FIELD_HEIGHT - 64 },
-    BULLET_SIZE = 30,
-    BULLET_SPEED = 10;
+    BULLET_SIZE = 30;
 
 
 
@@ -43,6 +41,7 @@ class Bullet {
     }
 
     fly() {
+        this.speed.x = -gloabalBulletSpeed;
         // clear
         var lastCoords = { x: this.coords.x, y: this.coords.y };
         // update
@@ -63,7 +62,7 @@ class Enemy {
         this.speed = speed || { x: globalSpeedX, y: 0 };
         this.rigidBody = this.createRigidBody(impulse);
         this.sprite = this.createSprite();
-        this.bullet = new Bullet(this.enemyCtx, { x: 2000, y: 0 });
+        this.bullet = new Bullet(this.enemyCtx, { x: 2000, y: -100 });
         this.bulletShot = false;
     }
 
@@ -132,7 +131,7 @@ class Enemy {
             this.bulletShot = true;
             var gunCoords = { x: this.rigidBody.coords.x + 12, y: this.rigidBody.coords.y + 5 };
             this.bullet.coords = { x: gunCoords.x, y: gunCoords.y };
-            this.bullet.speed.x = -BULLET_SPEED;
+            this.bullet.speed.x = -gloabalBulletSpeed;
         }
 
         this.bullet.fly();

@@ -8,10 +8,16 @@ const FIELD_WIDTH = 1024,
     COORDS = { x: 0, y: 0 },
     REAR_BG_POSITION_Y = 35,
     FRONT_BG_POSITION_Y = 80,
+    SLOW_TIME_SPEED = 1,
     WALKING_SPEED = 3,
-    RUNNING_SPEED = 6;
+    RUNNING_SPEED = 6,
+    NORMAL_BULLET_SPEED = 10,
+    SLOW_BULLET_SPEED = 3,
+    PIXELS_FOR_METER = 50;
 
-var globalSpeedX = WALKING_SPEED;
+var globalSpeedX = WALKING_SPEED,
+    gloabalBulletSpeed = NORMAL_BULLET_SPEED,
+    pixelsRun = 0;
 
 window.addEventListener('load', function() {
 
@@ -154,13 +160,13 @@ window.addEventListener('load', function() {
     var startInterval = 300;
 
     function addEnemy() {
-        if(enemiesPool.length) {
+        if (enemiesPool.length) {
             let currentEnemy = enemiesPool[enemiesPool.length - 1];
-            
-            if(currentEnemy.rigidBody.coords.x == startInterval) {
-                let newEnemy = new Enemy(enemyCtx);            
+
+            if (currentEnemy.rigidBody.coords.x == startInterval) {
+                let newEnemy = new Enemy(enemyCtx);
                 enemiesPool.push(newEnemy);
-                if(startInterval < 700) {
+                if (startInterval < 700) {
                     startInterval += 25;
                 }
             }
@@ -229,7 +235,7 @@ window.addEventListener('load', function() {
         // render and update player
         // check if gamecontainer is visible    
         if (gameContainer.className === '') {
-            
+
             // render and update buildings
             for (let i = 0; i < buildings.length; i += 1) {
                 let building = buildings[i];
@@ -240,7 +246,7 @@ window.addEventListener('load', function() {
                     continue;
                 }
             }
-            
+
             // render and update player
             var lastHeroCoords = heroBody
                 .applyGravity(GLOBAL_GRAVITY, heroFloor) // pulls down
@@ -251,19 +257,17 @@ window.addEventListener('load', function() {
                 .render(heroBody.coords, lastHeroCoords)
                 .update();
 
-            // render and update background based on hero speed
-            if (globalSpeedX >= 0) {
-                background.speed = globalSpeedX > 0 ? ((globalSpeedX - 2) + heroBody.speed.x) : 0;
-                frontBackground.speed = globalSpeedX > 0 ? ((globalSpeedX - 1) + heroBody.speed.x) : 0;
-            } else {
-                background.speed = globalSpeedX < 0 ? ((globalSpeedX + 2) - heroBody.speed.x) : 0;
-                frontBackground.speed = globalSpeedX < 0 ? ((globalSpeedX + 1) - heroBody.speed.x) : 0;
-            }
+            // update meters run
+            pixelsRun += globalSpeedX;
+
+            // render and update background 
+            background.speed = globalSpeedX > 0 ? ((globalSpeedX - globalSpeedX * 0.4)) : 0;
+            frontBackground.speed = globalSpeedX > 0 ? ((globalSpeedX - globalSpeedX * 0.2)) : 0;
 
             background.pan();
             frontBackground.pan();
 
-  /*        // CONFLICTED
+            /*        // CONFLICTED
             // spawn buildings
             // render and update buildings
 
@@ -319,20 +323,21 @@ window.addEventListener('load', function() {
             // render and update enemies
 
             addEnemy();
-            for(let i = 0; i < enemiesPool.length; i++) {
+            for (let i = 0; i < enemiesPool.length; i++) {
                 let currentEnemy = enemiesPool[i];
                 currentEnemy.move();
- 
-                if(currentEnemy.rigidBody.coords.x < -currentEnemy.rigidBody.width) {
+
+                if (currentEnemy.rigidBody.coords.x < -currentEnemy.rigidBody.width) {
                     enemiesPool.shift();
                     i--;
                     continue;
                 }
                 //collision
 
-                if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody) || 
-                (currentEnemy.bullet && heroBody.collidesWith(currentEnemy.bullet))) {
+                if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody) ||
+                    (currentEnemy.bullet && heroBody.collidesWith(currentEnemy.bullet))) {
 
+                    console.log("METERS RUN: " + pixelsRun / PIXELS_FOR_METER);
                     // save in locale storage
                     // clean timer
                     lastTimer = gameTimer.minutes + ':' + gameTimer.seconds;
@@ -341,17 +346,16 @@ window.addEventListener('load', function() {
                     gameTimer.totalSeconds = 0;
                     // return to menu
                     menu.gameOver();
-                    return;          
+                    return;
 
                 } else {
                     console.log(startInterval);
-                 }
+                }
             }
         }
-        
+
         // spawn buildings
         buildingRenderer.spawnBuildings(buildings, buildingsCtx);
-      
         window.requestAnimationFrame(gameLoop);
     }
 
