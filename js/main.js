@@ -157,11 +157,12 @@ window.addEventListener('load', function() {
             let currentEnemy = enemiesPool[enemiesPool.length - 1];
             
             if(currentEnemy.rigidBody.coords.x == startInterval) {
-            let newEnemy = new Enemy(enemyCtx);            
-            enemiesPool.push(newEnemy);
-            startInterval += 25;
+                let newEnemy = new Enemy(enemyCtx);            
+                enemiesPool.push(newEnemy);
+                if(startInterval < 700) {
+                    startInterval += 25;
+                }
             }
-
         } else {
             enemiesPool.push(new Enemy(enemyCtx));
         }
@@ -316,7 +317,9 @@ window.addEventListener('load', function() {
                 }
                 //collision
 
-                if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody)) {
+                if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody) || 
+                (currentEnemy.bullet && heroBody.collidesWith(currentEnemy.bullet))) {
+
                     // save in locale storage
                     // clean timer
                     lastTimer = gameTimer.minutes + ':' + gameTimer.seconds;
@@ -325,19 +328,7 @@ window.addEventListener('load', function() {
                     gameTimer.totalSeconds = 0;
                     // return to menu
                     menu.gameOver();
-                    return;
-                }
-
-                if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody) || 
-                (currentEnemy.bullet && heroBody.collidesWith(currentEnemy.bullet))) {
-
-                // return to menu
-                $('#game-play').addClass('hidden');
-                $('#menu-content').removeClass('hidden');
-
-
-                return;
-                console.log(true);               
+                    return;          
 
                 } else {
                     console.log(startInterval);
