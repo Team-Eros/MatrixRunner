@@ -164,7 +164,7 @@ window.addEventListener('load', function() {
         if (enemiesPool.length) {
             let currentEnemy = enemiesPool[enemiesPool.length - 1];
 
-            if (currentEnemy.rigidBody.coords.x == startInterval) {
+            if (currentEnemy.rigidBody.coords.x < startInterval) {
                 let newEnemy = new Enemy(enemyCtx);
                 enemiesPool.push(newEnemy);
                 if (startInterval < 700) {
@@ -327,10 +327,7 @@ window.addEventListener('load', function() {
                     // return to menu
                     menu.gameOver();
                     return;
-
-                } else {
-                    console.log(startInterval);
-                }
+                } 
             }
         }
 
