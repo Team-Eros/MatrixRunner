@@ -186,10 +186,6 @@ function gameOverControl() {
         window.location.reload();
     });
 
-    $('.scores-result').on('click', function() {
-        $('#game-over').addClass('hidden');
-        $('#scoreboard').removeClass('hidden');
-    })
 }
 
 // check if back in menu

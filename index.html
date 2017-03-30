@@ -137,7 +137,7 @@
             <div class="position-list col">
                 <ul>
                     {{#each this}}
-                    <li>{{@index}}</li>
+                    <li>{{inc @index}}</li>
                     {{/each}}
                 </ul>
             </div>
@@ -155,14 +155,6 @@
                     {{/each}}
                 </ul>
             </div>
-
-            <div class="point-list col">
-                <ul>
-                    {{#each this}}
-                    <li>{{playerScore}}</li>
-                    {{/each}}
-                </ul>
-            </div>
         </div>
     </script>
 
@@ -170,7 +162,6 @@
         <div class="title-menu">
             <img src="./assets/images/game_over.png" alt="" class="title-img">
             <div class='try-again'>Try Again</div>
-            <div class='scores-result'>Scores</div>
         </div>
 
         <div class="content-menu">
@@ -182,7 +173,6 @@
                     </label>
                     <span id="getPlayerName" class="hidden"></span>
                 </li>
-                <li>Score: <span id='current-score'> </span></li>
                 <li>Time: <span id="last-time"></span></li>
                 <li>Best: <span id='best-scores'></span></li>
             </ul>

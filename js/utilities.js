@@ -167,6 +167,11 @@ class GameState {
     score() {
         var data = getObjectFromLocalStorage();
 
+		// add helpers to start index from 1
+        Handlebars.registerHelper("inc", function(value, options) {
+            return parseInt(value) + 1;
+        });
+
         // score board state
         // go to menu state
         var $content = $('#scoreboard'),
@@ -183,12 +188,14 @@ class GameState {
     }
 
     gameOver() {
+	
+        var data = getObjectFromLocalStorage();
         var $content = $('#game-over'),
             $template = $('#game-over-template').html();
         $content.html($template);
 
         // Show results
-        $("#best-scores").html();
+        $("#best-scores").html(data[0].time);
 
         var $lastTimer = $('#timer').html();
         $("#last-time").html($lastTimer);

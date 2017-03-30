@@ -26,7 +26,7 @@ window.addEventListener('load', function() {
     var width = window.innerWidth,
         height = window.innerHeight,
         gameTimer = 0,
-        lastTimer = '';
+         lastTimer = 0;
 
     // templates
     var templateMenu = document.getElementById('menu-template').innerHTML,
@@ -183,6 +183,7 @@ window.addEventListener('load', function() {
 
         var input = document.querySelector("#playerName input");
         var name = input.value;
+		var getTime = document.getElementById('timer').innerHTML;
 
         var scoresHolder = document.getElementById("score");
 
@@ -191,36 +192,10 @@ window.addEventListener('load', function() {
             playerScores = [];
         }
 
-        playerScores.push({ "name": name, "playerScore": scoresHolder.innerHTML, 'time': lastTimer });
-
+        playerScores.push({ "name": name, "playerScore": scoresHolder.innerHTML, 'totalSeconds': lastTimer, 'time': getTime });
         playerScores.sort(function(a, b) {
-            return parseInt(b.playerScore) - parseInt(a.playerScore);
+            return parseInt(b.totalSeconds) - parseInt(a.totalSeconds);
         });
-
-        //display score in score
-        var bestScore = document.getElementById("best-scores");
-        var lastTime = document.getElementById("last-time");
-        var currentScore = document.getElementById('current-score');
-
-        // update 
-        bestScore.innerHTML = playerScores[0].playerScore || 0;
-
-        scoresHolder.innerHTML = "0";
-        // // in SCORE TABLE TODDO:
-        // for (var i = 0; i < playerScores.length; i++) {
-        //     var boldItem = false;
-        //     if (playerScores[i]["name"] == name) {
-        //         boldItem = true;
-        //     }
-        //     var currentScore = document.createElement("li");
-        //     currentScore.innerText = playerScores[i]["name"] + ":" + playerScores[i]["playerScore"];
-
-
-        //     scoresHolder.appendChild(currentScore);
-        // }
-
-        // scoreBoard.style.display = "block";
-        console.log(playerScores);
 
         setObjectToLocalStorage(playerScores);
 
