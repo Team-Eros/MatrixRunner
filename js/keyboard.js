@@ -174,6 +174,10 @@ function gameOverControl() {
 
             $(this).trigger('onEnter');
             var value = $('#playerName input').val();
+            if (value === '') {
+                $('#playerName input').val('Anonymos');
+                value = 'Anonymos';
+            }
             $('#playerName').addClass('hidden');
             $('#getPlayerName').html(value).removeClass('hidden');
 

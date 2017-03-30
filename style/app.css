@@ -172,14 +172,15 @@
             /*Game Over*/
             
             #game-over .content-menu {
-                top: 55%;
+                top: 48%;
             }
             
             #game-over .content-menu input {
-                line-height: 27px;
+                line-height: 37px;
                 background: #021003;
                 border: 1px solid #064305;
                 color: #cce8ca;
+                font-size: 0.6em;
             }
             
             .content-menu ul {
