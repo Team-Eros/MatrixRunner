@@ -43,8 +43,36 @@ Controls of the game are very simple:
 `space` | Jumps again
 `escape` | Stops the game and enters menu
 
+### Development Task List
+- Create Main Structure
+   - HTML file, link assets
+  - main JS file structure - main.js, player.js, sprite.js, rigidbody.js
+  - CSS style file and assets folder
+- Create main game classes
+  - Entity or GameObject // not implemented
+  - RigidBody
+  - Sprite
+  - Player
+  - Enemy
+  - Bullets
+  - Background
+  - Buildings
+  - Keyboard
+  - clock
+  - localStorage
+- Create Menu and UI
+  - Home screen
+  - Game play screen
+  - Game Over screen
+  - Credits
+  - Scoreboard
+- Add Music and Audio
+  - Menu Audio
+  - Game play sounds (shoot, jump, dead) // not implemented
+  - Game play music
 
-
+ 
+ 
  
 Here are some other useful links:  
 - [Project Description](https://github.com/Team-Eros/MatrixRunner#introduction)
@@ -54,13 +82,13 @@ Here are some other useful links:
 
 ## Teamwork members
 
-### Contributors
+#### Contributors
 [Доротея Николова](https://telerikacademy.com/Users/d.nikolova93) - d.nikolova93  
 [Захари Димитров](https://telerikacademy.com/Users/ZachD) - ZachD  
 [Цветан Караджов](https://telerikacademy.com/Users/c.karadjov) - c.karadjov  
 [Вилиана Жилкова](https://telerikacademy.com/Users/Viliana_Zhilkova) - Viliana_Zhilkova  
 
-## Not contributed  
+#### Not contributed  
 *[Анна Янакиева-Ляпчева](https://telerikacademy.com/Users/Anna.Ianakieva) - Anna.Ianakieva*  
 *[Иван Илиев](https://telerikacademy.com/Users/Ivan_Iliev) - Ivan_Iliev*   
 *[Светломир Балевски](https://telerikacademy.com/Users/DesertFox) - DesertFox*  
