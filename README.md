@@ -71,14 +71,11 @@ Controls of the game are very simple:
   - Game play sounds (shoot, jump, dead) // not implemented
   - Game play music
 
- 
- 
- 
-Here are some other useful links:  
+**Here are some useful links:**  
 - [Project Description](https://github.com/Team-Eros/MatrixRunner#introduction)
 - [Gameplay Instructions](https://github.com/Team-Eros/MatrixRunner#game-features)
 - [Game Introduction Video](https://youtu.be/hilbwnZb820)
-- [Development Task List](#)
+- [Development Task List](https://github.com/Team-Eros/MatrixRunner/blob/master/README.md#development-task-list)
 
 ## Teamwork members
 
