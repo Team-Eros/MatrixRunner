@@ -1,1 +1,0 @@
-// used to render objects on canvas (optional)

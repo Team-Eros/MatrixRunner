@@ -72,23 +72,18 @@ function controlMenu() {
 
             // Easy
             if (active.is('#easyLvl')) {
-                // TODO: add speed on buildings
                 $('#menuContent').addClass('hidden');
                 $('#game-play').removeClass('hidden');
             }
 
             // Normal
             if (active.is('#normaLvl')) {
-
-                // TODO: add speed on buildings
                 $('#menuContent').addClass('hidden');
                 $('#game-play').removeClass('hidden');
             }
 
             // Hard
             if (active.is('#hardLvl')) {
-
-                // TODO: add speed on buildings
                 $('#menuContent').addClass('hidden');
                 $('#game-play').removeClass('hidden');
             }
@@ -216,12 +211,6 @@ function controlPlayer(body, floor) {
     window.addEventListener('keydown', function(ev) {
         switch (ev.which) {
             case 37:
-                // if (body.coords.x <= 0) {
-                //     body.coords.x = 0;
-                //     body.speed.x = 0;
-                //     return;
-                // }
-                //body.speed.x = -body.impulse.x;
                 gloabalBulletSpeed = SLOW_BULLET_SPEED;
                 globalSpeedX = SLOW_TIME_SPEED;
                 break;
@@ -262,8 +251,5 @@ function controlPlayer(body, floor) {
             gloabalBulletSpeed = NORMAL_BULLET_SPEED;
             globalSpeedX = WALKING_SPEED;
         }
-        //if (ev.which !== 38 && body.y >= floor - 26) {
-        //    friction = GLOBAL_FRICTION;
-        //}
     });
 }

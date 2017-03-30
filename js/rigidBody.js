@@ -39,12 +39,7 @@ class RigidBody {
     }
 
     applyGravity(gravity, floor) {
-        // needs refactoring
         floor = floor || FIELD_HEIGHT - this.height;
-        // if (this.coords.y === floor) {
-        //     this.speed.y = 0;
-        //     return this;
-        // }
 
         if (this.coords.y > floor) {
             this.coords.y = floor;

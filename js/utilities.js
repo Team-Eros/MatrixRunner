@@ -4,12 +4,12 @@ var matrixEffectImg = document.getElementById('backgroundEffect');
 
 class GameState {
     constructor(content, template, coords, backgroundCtx, speedY, image) {
-        this._content = content; // #menu
-        this.template = template; // #menu-template
-        this.context = backgroundCtx; // // menu-backgound
+        this._content = content;
+        this.template = template;
+        this.context = backgroundCtx;
         this.coordinates = coords || { x: 0, y: 0 };
         this.speedY = speedY || 1;
-        this.image = matrixEffectImg; // backgroundEffect
+        this.image = matrixEffectImg;
     }
 
     get content() {
@@ -61,7 +61,7 @@ class GameState {
     };
 
     update() {
-        this.coordinates.y += this.speedY; // options.sppedY
+        this.coordinates.y += this.speedY;
 
         if (Math.abs(this.coordinates.y) > this.image.height) {
             this.coordinates.y = 0;
@@ -73,10 +73,6 @@ class GameState {
 
     menu() {
         // menu state
-        // go to play, credits, score state
-
-        // data 
-
         var data = {
             menu: [{
                     option: 'Load',
@@ -128,9 +124,7 @@ class GameState {
         return this;
     }
     credits() {
-
         // credits state
-        // go to menu state
         var data = {
             code: [
                 'Zahari Dimitrov',
@@ -168,17 +162,13 @@ class GameState {
         Handlebars.registerHelper("inc", function(value, options) {
             return parseInt(value) + 1;
         });
-
         // score board state
-        // go to menu state
         var $content = $('#scoreboard'),
             $template = $('#scores-template').html();
         // compile template 
         var hbTemplate = Handlebars.compile($template);
 
         $content.html(hbTemplate(data));
-
-
         controlCredits('#scoreboard');
 
 
@@ -198,8 +188,6 @@ class GameState {
         if (data.length !== 0) {
             $("#best-scores").html(data[0].playerScore);
         }
-
-
         var $lastTimer = $('#timer').html();
         $("#last-time").html($lastTimer);
 
@@ -217,21 +205,5 @@ class GameState {
 
         //audio pause
         audio.pause();
-    }
-    pause() {
-        // pause state
-        // go to play state
-    }
-    play() {
-        // play state
-        // go to pause, win or lost state
-    }
-    lost() {
-        // lost state
-        // go to menu state
-    }
-    winner() {
-        // win state
-        // go to menu state
     }
 }

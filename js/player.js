@@ -9,8 +9,8 @@ const HERO_ALL_FRAMES = 31,
     WALK_FRAMES = 15,
     STAY_INDEX = 19,
     CYCLES_PER_FRAME_RUN = 3,
-    CYCLES_PER_FRAME_WALK = 6;
-const DEFAULT_IMPULSE_X = 7,
+    CYCLES_PER_FRAME_WALK = 6,
+    DEFAULT_IMPULSE_X = 7,
     DEFAULT_IMPULSE_Y = 10;
 
 var heroSheet = document.getElementById("hero-sprite");
@@ -69,14 +69,12 @@ class Player {
                 this.sprite.frameIndex = STAY_INDEX;
                 this.sprite.framesCount = 1;
                 break;
-                // case for shoot
-                // case for escape bullets
         }
         return this.sprite;
     }
 
     switchHeroSprites() {
-        let heroBody = this.rigidBody,
+        var heroBody = this.rigidBody,
             heroSprite = this.Sprite;
         if ((heroBody.speed.x > 0 && heroBody.speed.y === 0) || globalSpeedX > 5) {
             heroSprite = this.changeSprite("run");

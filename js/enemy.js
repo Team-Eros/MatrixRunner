@@ -141,28 +141,6 @@ class Enemy {
             this.bullet.speed.x = 0;
         }
 
-        /*
-        let oldFirstPosition = { x: this.coords.x, y: this.coords.y };
-        //oldSecondPosition = { x: oldFirstPosition.x + enemySheet.width, y: oldFirstPosition.y + enemySheet.y };
-
-        // move enemy
-        this.coords.x -= this.speed;
-
-        // save new position
-        let newFirstPosition = { x: this.coords.x, y: this.coords.y };
-
-        // render (with sprite.render method)
-        this.sprite.render(newFirstPosition, oldFirstPosition).update();
-
-        // reset position (first goes after second)
-        */
-        /*
-          if (this.rigidBody.coords.x < -this.rigidBody.width) {
-              this.rigidBody.coords.x = DEFAUT_START_COORDS.x;
-              this.bulletShot = false;
-          }
-          */
-
         return this;
     }
 }

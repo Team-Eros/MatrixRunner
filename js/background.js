@@ -32,7 +32,7 @@ class Background {
     }
 
     pan() {
-        let oldFirstPosition,
+        var oldFirstPosition,
             oldSecondPosition;
 
         oldFirstPosition = { x: this.coords.x, y: this.coords.y };
@@ -44,7 +44,7 @@ class Background {
         // move background
         this.coords.x -= this.speed;
 
-        let newFirstPosition,
+        var newFirstPosition,
             newSecondPosition;
 
         // save new position
