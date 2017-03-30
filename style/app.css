@@ -55,7 +55,7 @@
             #frontbg-canvas {
                 z-index: -9;
             }
-
+            
             #buildings-canvas {
                 z-index: -8;
             }
@@ -282,7 +282,7 @@
             #scoreboard .table-content .col {
                 float: left;
                 display: table-column;
-                width: 33.2%;
+                width: 24.2%;
                 border-left: 2px solid #064305;
             }
             

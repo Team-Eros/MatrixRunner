@@ -155,6 +155,13 @@
                     {{/each}}
                 </ul>
             </div>
+            <div class="point-list col">
+                <ul>
+                    {{#each this}}
+                    <li>{{playerScore}}</li>
+                    {{/each}}
+                </ul>
+            </div>
         </div>
     </script>
 
@@ -173,6 +180,7 @@
                     </label>
                     <span id="getPlayerName" class="hidden"></span>
                 </li>
+                <li>Score: <span id='current-score'> </span></li>
                 <li>Time: <span id="last-time"></span></li>
                 <li>Best: <span id='best-scores'></span></li>
             </ul>

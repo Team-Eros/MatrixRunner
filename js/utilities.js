@@ -167,7 +167,7 @@ class GameState {
     score() {
         var data = getObjectFromLocalStorage();
 
-		// add helpers to start index from 1
+        // add helpers to start index from 1
         Handlebars.registerHelper("inc", function(value, options) {
             return parseInt(value) + 1;
         });
@@ -188,14 +188,20 @@ class GameState {
     }
 
     gameOver() {
-	
+
         var data = getObjectFromLocalStorage();
         var $content = $('#game-over'),
             $template = $('#game-over-template').html();
         $content.html($template);
 
+        if (!data) {
+            data = [];
+        }
         // Show results
-        $("#best-scores").html(data[0].time);
+        if (data.length !== 0) {
+            $("#best-scores").html(data[0].playerScore);
+        }
+
 
         var $lastTimer = $('#timer').html();
         $("#last-time").html($lastTimer);

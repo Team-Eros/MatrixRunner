@@ -26,7 +26,7 @@ window.addEventListener('load', function() {
     var width = window.innerWidth,
         height = window.innerHeight,
         gameTimer = 0,
-         lastTimer = 0;
+        lastTimer = 0;
 
     // templates
     var templateMenu = document.getElementById('menu-template').innerHTML,
@@ -178,12 +178,13 @@ window.addEventListener('load', function() {
 
     // call storage on enter Name field
     storage(saveScore);
+
     // storage
     function saveScore() {
 
         var input = document.querySelector("#playerName input");
         var name = input.value;
-		var getTime = document.getElementById('timer').innerHTML;
+        var getTime = document.getElementById('timer').innerHTML;
 
         var scoresHolder = document.getElementById("score");
 
@@ -192,9 +193,9 @@ window.addEventListener('load', function() {
             playerScores = [];
         }
 
-        playerScores.push({ "name": name, "playerScore": scoresHolder.innerHTML, 'totalSeconds': lastTimer, 'time': getTime });
+        playerScores.push({ "name": name, "playerScore": pixelsRun / PIXELS_FOR_METER + 'm', 'totalSeconds': lastTimer, 'time': getTime });
         playerScores.sort(function(a, b) {
-            return parseInt(b.totalSeconds) - parseInt(a.totalSeconds);
+            return parseInt(b.playerScore) - parseInt(a.playerScore);
         });
 
         setObjectToLocalStorage(playerScores);
@@ -235,6 +236,8 @@ window.addEventListener('load', function() {
 
             // update meters run
             pixelsRun += globalSpeedX;
+            var scoreContaner = document.getElementById('score');
+            scoreContaner.innerHTML = (pixelsRun / PIXELS_FOR_METER).toFixed(0) + 'm';
             if (pixelsRun > 1000 * multiplier) {
                 globalRunSpeed += 1;
                 multiplier += 3;
@@ -316,8 +319,6 @@ window.addEventListener('load', function() {
 
                 if (currentEnemy && heroBody.collidesWith(currentEnemy.rigidBody) ||
                     (currentEnemy.bullet && heroBody.collidesWith(currentEnemy.bullet))) {
-
-                    console.log("METERS RUN: " + pixelsRun / PIXELS_FOR_METER);
                     // save in locale storage
                     // clean timer
                     lastTimer = gameTimer.minutes + ':' + gameTimer.seconds;
@@ -327,7 +328,7 @@ window.addEventListener('load', function() {
                     // return to menu
                     menu.gameOver();
                     return;
-                } 
+                }
             }
         }
 
