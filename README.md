@@ -60,7 +60,7 @@ Here are some other useful links:
 [Цветан Караджов](https://telerikacademy.com/Users/c.karadjov) - c.karadjov  
 [Вилиана Жилкова](https://telerikacademy.com/Users/Viliana_Zhilkova) - Viliana_Zhilkova  
 
-## Not contributed
-*[Анна Янакиева-Ляпчева](https://telerikacademy.com/Users/Anna.Ianakieva) - Anna.Ianakieva*
-*[Иван Илиев](https://telerikacademy.com/Users/Ivan_Iliev) - Ivan_Iliev*  
-*[Светломир Балевски](https://telerikacademy.com/Users/DesertFox) - DesertFox* 
+## Not contributed  
+*[Анна Янакиева-Ляпчева](https://telerikacademy.com/Users/Anna.Ianakieva) - Anna.Ianakieva*  
+*[Иван Илиев](https://telerikacademy.com/Users/Ivan_Iliev) - Ivan_Iliev*   
+*[Светломир Балевски](https://telerikacademy.com/Users/DesertFox) - DesertFox*  
