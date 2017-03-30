@@ -47,9 +47,9 @@ Controls of the game are very simple:
 
  
 Here are some other useful links:  
-- [Project Description](#)
-- [Gameplay Instructions](#)
-- [Game Introduction Video](#)
+- [Project Description](https://github.com/Team-Eros/MatrixRunner#introduction)
+- [Gameplay Instructions](https://github.com/Team-Eros/MatrixRunner#game-features)
+- [Game Introduction Video](https://youtu.be/hilbwnZb820)
 - [Development Task List](#)
 
 ## Teamwork members
