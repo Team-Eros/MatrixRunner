@@ -136,9 +136,6 @@ class GameState {
                 'Zahari Dimitrov',
                 'Doroteya Nikolova',
                 'Viliana Zhilkova',
-                'Ivan Iliev',
-                'Svetlomir Balevski',
-                'Anna Yanakieva',
                 'Cvetan Karadjov'
             ],
             art: [],
