@@ -214,6 +214,9 @@ class GameState {
 
         // control enter input
         gameOverControl();
+
+        //audio pause
+        audio.pause();
     }
     pause() {
         // pause state

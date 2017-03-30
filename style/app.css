@@ -21,6 +21,10 @@
                 margin: 0;
                 padding: 0;
             }
+
+            audio {
+                display: none;
+            }
             
             .hidden {
                 display: none;

@@ -36,7 +36,8 @@ window.addEventListener('load', function() {
     // define variables
     var gameContainer = document.getElementById("game-play"),
         menuWrapper = document.getElementById('menuContent'),
-        menuContainer = document.getElementById("menu");
+        menuContainer = document.getElementById("menu"),
+        audio = document.getElementById('audio');
 
     // menuContainer.innerHTML = templateMenu;
     gameContainer.innerHTML = templateGameMenu;
@@ -212,7 +213,8 @@ window.addEventListener('load', function() {
         // render and update player
         // check if gamecontainer is visible    
         if (gameContainer.className === '') {
-
+            //load audio
+            audio.play();
             // render and update buildings
             for (let i = 0; i < buildings.length; i += 1) {
                 let building = buildings[i];

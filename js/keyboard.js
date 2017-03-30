@@ -136,12 +136,14 @@ function gameMenu(timer) {
                 .find('img')
                 .attr('src', './assets/images/pause.png');
             timer.resume();
+            audio.play();
         } else {
             $('#game-play').addClass('pause-loop');
             $this
                 .find('img')
                 .attr('src', './assets/images/play.png');
             timer.pause();
+            audio.pause();
         }
     });
 
